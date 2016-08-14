@@ -1,0 +1,123 @@
+#include "fdf.h"
+#include "libft.h"
+#include "get_next_line.h"
+#define IS_DECIMAL_CHAR(c) (c >= '0' && c <= '9')
+
+static int		is_number(char **c)
+{
+	int		is_left;
+
+	is_left = 1;
+	while (**c && **c != ' ')
+	{
+		if (**c == '-')
+		{
+			if (!is_left || !IS_DECIMAL_CHAR((*c)[1]))
+				return (0);
+		}
+		else if (!IS_DECIMAL_CHAR(**c))
+			return (0);
+		is_left = 0;
+		(*c)++;
+	}
+	return (is_left == 0);
+}
+
+static int		save_line(t_list **lst, char *line, int *expected_length)
+{
+	t_list	*new;
+	char	*c;
+	int		length;
+
+	c = line;
+	while (*c == ' ')
+		c++;
+	while (*c)
+	{
+		if (is_number(&c) == 0)
+			return (-1);
+		while (*c == ' ')
+			c++;
+		length++;
+	}
+	if (*expected_length == -1)
+		*expected_length = length;
+	else if (length != *expected_length)
+		return (-1);
+	//new = ft_lstnew(line, ft_strlen(line));
+	new = ft_lstnew_nocpy(ft_strsplit(line, ' '), 0);
+	if (new == NULL)
+		return (-1);
+	ft_lstappend(lst, new);
+	return (length);
+}
+
+static void		fill_grid(t_grid *grid, t_list *lst)
+{
+	int		line;
+	int		col;
+	t_list	*next;
+	char	**tab;
+
+	line = 0;
+	while (line < grid->height)
+	{
+		tab = (char**)lst->content;
+		col = 0;
+		while (col < grid->width)
+		{
+			grid->tab[line][col] = ft_atoi(tab[col]);
+			free(tab[col]);
+			col++;
+		}
+		next = lst->next;
+		free(lst->content);
+		free(lst);
+		lst = next;
+		line++;
+	}
+}
+
+static t_grid	*create_grid(t_list *lst, int line_length)
+{
+	int		line_nbr;
+	t_grid	*grid;
+	int		**tab;
+	int		i;
+
+	line_nbr = ft_lstlen(lst);
+	if ((tab = (int**)malloc(sizeof(int*) * line_nbr)) == NULL)
+		return (NULL);
+	i = 0;
+	while (i < line_nbr)
+	{
+		if ((tab[i++] = (int*)malloc(sizeof(int) * line_length)) == NULL)
+			return (NULL);
+	}
+	if ((grid = (t_grid*)malloc(sizeof(t_grid))) == NULL)
+		return (NULL);
+	grid->height = line_nbr;
+	grid->width = line_length;
+	grid->tab = tab;
+	fill_grid(grid, lst);
+	return (grid);
+}
+
+t_grid	*parse_file(int fd)
+{
+	char	*line;
+	t_list	*lst;
+	int		line_length;
+
+	line_length = -1;
+	lst = NULL;
+	while (get_next_line(fd, &line) > 0)
+	{
+		if (save_line(&lst, line, &line_length) == -1)
+			return (NULL);
+		free(line);
+	}
+	if (line_length == -1)
+		return (NULL);
+	return (create_grid(lst, line_length));
+}

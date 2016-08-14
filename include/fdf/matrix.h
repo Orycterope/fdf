@@ -8,7 +8,9 @@ typedef	struct		s_matrix
 		int			**m;
 }					t_matrix;
 
-//typedef int[1][3]	t_vector;
-
 t_matrix	multiply_matrixes(t_matrix m, t_matrix n);
+void		free_matrix_content(t_matrix m);
+t_matrix	create_vector(int x, int y, int z);
+void		normalize_vector(t_matrix vector);
+
 #endif

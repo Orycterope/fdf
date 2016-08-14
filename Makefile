@@ -28,11 +28,12 @@ CC = gcc -g
 CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS = $(addprefix -I ,$(INC_PATH))
 LDFLAGS = -L$(LFT_PATH)
-LDLIBS = -lft
+LDLIBS = -lft -lm
 
 SRC_NAME =		main.c \
 				parser.c \
 				matrix.c \
+				vector.c \
 
 HEADER_NAME = 	fdf.h \
 				matrix.h \

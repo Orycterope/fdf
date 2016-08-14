@@ -42,3 +42,13 @@ t_matrix	multiply_matrixes(t_matrix a, t_matrix b)
 	}
 	return (new);
 }
+
+void		free_matrix_content(t_matrix m)
+{
+	int	i;
+
+	i = 0;
+	while (i < m.y_size)
+		free(m.m[i++]);
+	free(m.m);
+}	

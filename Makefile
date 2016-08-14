@@ -32,8 +32,10 @@ LDLIBS = -lft
 
 SRC_NAME =		main.c \
 				parser.c \
+				matrix.c \
 
 HEADER_NAME = 	fdf.h \
+				matrix.h \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

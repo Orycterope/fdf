@@ -1,6 +1,7 @@
 #include "fdf.h"
 #include "libft.h"
 #include "get_next_line.h"
+#include "matrix.h"
 #define IS_DECIMAL_CHAR(c) (c >= '0' && c <= '9')
 
 static int		is_number(char **c)
@@ -66,7 +67,10 @@ static void		fill_grid(t_grid *grid, t_list *lst)
 		col = 0;
 		while (col < grid->width)
 		{
-			grid->tab[line][col] = ft_atoi(tab[col]);
+			grid->tab[line][col][0] = col;
+			grid->tab[line][col][1] = line;
+			grid->tab[line][col][2] = ft_atoi(tab[col]);
+			grid->tab[line][col][3] = 1;
 			free(tab[col]);
 			col++;
 		}
@@ -80,22 +84,17 @@ static void		fill_grid(t_grid *grid, t_list *lst)
 
 static t_grid	*create_grid(t_list *lst, int line_length)
 {
-	int		line_nbr;
-	t_grid	*grid;
-	int		**tab;
-	int		i;
+	int			line_nbr;
+	t_grid		*grid;
+	t_vector	**tab;
+	int			i;
 
 	line_nbr = ft_lstlen(lst);
-	if ((tab = (int**)malloc(sizeof(int*) * line_nbr)) == NULL)
-		return (NULL);
+	tab = (t_vector**)ft_memalloc(sizeof(t_vector*) * line_nbr);
 	i = 0;
 	while (i < line_nbr)
-	{
-		if ((tab[i++] = (int*)malloc(sizeof(int) * line_length)) == NULL)
-			return (NULL);
-	}
-	if ((grid = (t_grid*)malloc(sizeof(t_grid))) == NULL)
-		return (NULL);
+		tab[i++] = (t_vector*)ft_memalloc(sizeof(t_vector) * line_length);
+	grid = (t_grid*)ft_memalloc(sizeof(t_grid));
 	grid->height = line_nbr;
 	grid->width = line_length;
 	grid->tab = tab;
@@ -103,7 +102,7 @@ static t_grid	*create_grid(t_list *lst, int line_length)
 	return (grid);
 }
 
-t_grid	*parse_file(int fd)
+t_grid			*parse_file(int fd)
 {
 	char	*line;
 	t_list	*lst;

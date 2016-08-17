@@ -14,7 +14,7 @@ typedef float	t_matrix_four[4][4];
 
 t_matrix_four	*multiply_matrixes(t_matrix_four a, t_matrix_four b);
 t_vector		*multiply_matrix_vector(t_matrix_four m, t_vector v);
-t_vector		*create_vector(int x, int y, int z);
+void			fill_vector(t_vector *v, float x, float y, float z);
 void			normalize_vector(t_vector *v);
 
 #endif

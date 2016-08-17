@@ -22,7 +22,7 @@ static void	test_multiplication()
 	t_matrix_four	a = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
 	t_matrix_four	b = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
 	t_matrix_four	*c;
-	t_vector		*v;
+	t_vector		v;
 	t_vector		*vt;
 
 	ft_printf("---A---\n");
@@ -33,13 +33,13 @@ static void	test_multiplication()
 	c = multiply_matrixes(a, b);
 	print_tab((float*)c, 4, 4);
 	ft_printf("---V---\n");
-	v = create_vector(2, 5, -3);
+	fill_vector(&v, 2, 5, -3);
 	print_tab((float*)v, 1, 4);
 	ft_printf("---Vn---\n");
-	normalize_vector(v);
+	normalize_vector(&v);
 	print_tab((float*)v, 1, 4);
 	ft_printf("---CxVn---\n");
-	vt = multiply_matrix_vector(*c, *v);
+	vt = multiply_matrix_vector(*c, v);
 	print_tab((float*)vt, 1, 4);
 	ft_printf("OK\n");
 }

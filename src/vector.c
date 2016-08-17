@@ -2,16 +2,12 @@
 #include "libft.h"
 #include <math.h>
 
-t_vector	*create_vector(int x, int y, int z)
+void		fill_vector(t_vector *v, float x, float y, float z)
 {
-	t_vector	*new;
-
-	new = (t_vector*)ft_memalloc(sizeof(t_vector));
-	(*new)[0] = x;
-	(*new)[1] = y;
-	(*new)[2] = z;
-	(*new)[3] = 1;
-	return (new);
+	(*v)[0] = x;
+	(*v)[1] = y;
+	(*v)[2] = z;
+	(*v)[3] = 1;
 }
 
 void		normalize_vector(t_vector *v)

@@ -30,6 +30,7 @@ static int		save_line(t_list **lst, char *line, int *expected_length)
 	char	*c;
 	int		length;
 
+	length = 0;
 	c = line;
 	while (*c == ' ')
 		c++;

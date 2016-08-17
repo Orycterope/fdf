@@ -1,6 +1,8 @@
 #include "fdf.h"
 #include "matrix.h" // not here ?
+#include "display.h"
 #include "libft.h"
+#include <mlx.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -66,7 +68,9 @@ int	main(int ac, char **av)
 		ft_putstr_fd("This is not a valid map\n", 2);
 		exit(1);
 	}
-	(void)grid;
+	init_mlx();
+	display_grid(grid);
+	mlx_loop(display.mlx_ptr);
 //	print_tab(grid->tab, grid->width, grid->height);
 	return (0);
 }

@@ -28,15 +28,17 @@ CC = gcc -g
 CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS = $(addprefix -I ,$(INC_PATH))
 LDFLAGS = -L$(LFT_PATH)
-LDLIBS = -lft -lm
+LDLIBS = -lft -lm -lmlx -lXext -lX11
 
 SRC_NAME =		main.c \
 				parser.c \
 				matrix.c \
 				vector.c \
+				display.c \
 
 HEADER_NAME = 	fdf.h \
 				matrix.h \
+				display.h \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

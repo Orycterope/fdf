@@ -6,42 +6,42 @@
 #include <errno.h>
 #include <stdio.h> //for perror
 
-void	print_tab(int **matrix, int x, int y) // DEBUG
+void	print_tab(float *matrix, int x, int y) // DEBUG
 {
 	    int		i, j;
 		for (i = 0; i < y; ++i)
 		{
 			for (j = 0; j < x; ++j)
-				ft_printf("%d ", matrix[i][j]);
-			ft_printf("\n");
+				printf("%6.2f ", matrix[i * x + j]); //
+			printf("\n");
 		}
 }
 
 static void	test_multiplication()
 {
-	t_matrix a;
-	t_matrix b;
-	t_matrix c;
-	int	tabA1[] = {1, 2};
-	int	tabA2[] = {3, 4};
-	int	tabA3[] = {5, 6};
-	int	tabA4[] = {7, 8};
-	int	*tabA[] = {tabA1, tabA2, tabA3, tabA4};
-	int	tabB1[] = {1, 2, 3};
-	int	tabB2[] = {4, 5, 6};
-	int	*tabB[] = {tabB1, tabB2};
+	t_matrix_four	a = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+	t_matrix_four	b = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+	t_matrix_four	*c;
+	t_vector		*v;
+	t_vector		*vt;
 
-
-	a.m = tabA;
-	a.x_size = 2;
-	a.y_size = 4;
-	b.m = tabB;
-	b.x_size = 3;
-	b.y_size = 2;
-	print_tab(a.m, a.x_size, a.y_size);
-	print_tab(b.m, b.x_size, b.y_size);
+	ft_printf("---A---\n");
+	print_tab((float*)a, 4, 4);
+	ft_printf("---B---\n");
+	print_tab((float*)b, 4, 4);
+	ft_printf("---AxB---\n");
 	c = multiply_matrixes(a, b);
-	print_tab(c.m, c.x_size, c.y_size);
+	print_tab((float*)c, 4, 4);
+	ft_printf("---V---\n");
+	v = create_vector(2, 5, -3);
+	print_tab((float*)v, 1, 4);
+	ft_printf("---Vn---\n");
+	normalize_vector(v);
+	print_tab((float*)v, 1, 4);
+	ft_printf("---CxVn---\n");
+	vt = multiply_matrix_vector(*c, *v);
+	print_tab((float*)vt, 1, 4);
+	ft_printf("OK\n");
 }
 
 int	main(int ac, char **av)
@@ -67,6 +67,6 @@ int	main(int ac, char **av)
 		exit(1);
 	}
 	(void)grid;
-	print_tab(grid->tab, grid->width, grid->height);
+//	print_tab(grid->tab, grid->width, grid->height);
 	return (0);
 }

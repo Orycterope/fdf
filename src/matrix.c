@@ -1,3 +1,4 @@
+#include "fdf.h"
 #include "matrix.h"
 #include "libft.h"
 
@@ -49,4 +50,25 @@ t_vector		*multiply_matrix_vector(t_matrix_four m, t_vector v)
 		y++;
 	}
 	return (new);
+}
+
+void			apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
+{
+	int			x;
+	int			y;
+	t_vector	*new;
+
+	y = 0;
+	while (y < grid->height)
+	{
+		x = 0;
+		while (x < grid->width)
+		{
+			new = multiply_matrix_vector(m, grid->tab[y][x]);
+			ft_memcpy(&(grid->tab[y][x]), new, sizeof(t_vector));
+			free(new);
+			x++;
+		}
+		y++;
+	}
 }

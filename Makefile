@@ -35,10 +35,12 @@ SRC_NAME =		main.c \
 				matrix.c \
 				vector.c \
 				display.c \
+				camera.c \
 
 HEADER_NAME = 	fdf.h \
 				matrix.h \
 				display.h \
+				camera.h \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

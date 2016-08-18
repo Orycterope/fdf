@@ -2,6 +2,7 @@
 #include "display.h"
 #include "fdf.h"
 #include "libft.h"
+#include <stdio.h> // remove me !
 
 t_display	display;
 
@@ -32,6 +33,7 @@ void		display_grid(t_grid *grid)
 	int	x;
 	int	y;
 
+	mlx_clear_window(display.mlx_ptr, display.win);
 	y = 0;
 	while (y < grid->height)
 	{
@@ -42,8 +44,10 @@ void		display_grid(t_grid *grid)
 				(int)grid->tab[y][x][0], (int)grid->tab[y][x][1],
 				0xFFFFFF);*/
 			mlx_string_put(display.mlx_ptr, display.win, 
-				(int)grid->tab[y][x][0] * 20, (int)grid->tab[y][x][1] * 20,
+				(int)grid->tab[y][x][0] * 40 + WIN_WIDTH / 2, 
+				(int)grid->tab[y][x][1] * 40 + WIN_HEIGHT / 2,
 				0xFFFFFF, ft_itoa((int)grid->tab[y][x][2]));
+			printf("Puting vertex at x: %f, y: %f, z: %f\n", grid->tab[y][x][0], grid->tab[y][x][1], grid->tab[y][x][2]); //
 			x++;
 		}
 		y++;

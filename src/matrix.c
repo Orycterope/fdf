@@ -72,3 +72,13 @@ void			apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
 		y++;
 	}
 }
+
+void			fill_identity_matrix(t_matrix_four *dest)
+{
+	int	i;
+
+	ft_bzero(dest, sizeof(t_matrix_four));
+	i = -1;
+	while (++i < 4)
+		(*dest)[i][i] = 1;
+}

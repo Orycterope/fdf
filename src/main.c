@@ -2,12 +2,27 @@
 #include "matrix.h" // not here ?
 #include "display.h"
 #include "libft.h"
+#include "camera.h"
 #include <mlx.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h> //for perror
 
+static void	test_transform(t_grid *grid) //
+{
+	t_matrix_four	m;
+
+	ft_bzero(&m, sizeof(t_matrix_four));
+	m[0][3] = -grid->width / 2;
+	m[1][3] = -grid->height / 2;
+	m[0][0] = 1;
+	m[1][1] = 1;
+	m[2][2] = 1;
+	m[3][3] = 1;
+	apply_matrix_to_grid(m, grid);
+}
+	
 void	print_tab(float *matrix, int x, int y) // DEBUG
 {
 	    int		i, j;
@@ -69,6 +84,11 @@ int	main(int ac, char **av)
 		exit(1);
 	}
 	init_mlx();
+	init_camera();
+	test_transform(grid);
+	display_grid(grid);
+	rotate_camera('y', 1);
+	(void)project_grid(grid);
 	display_grid(grid);
 	mlx_loop(display.mlx_ptr);
 //	print_tab(grid->tab, grid->width, grid->height);

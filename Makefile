@@ -31,6 +31,7 @@ LDFLAGS = -L$(LFT_PATH)
 LDLIBS = -lft -lm -lmlx -lXext -lX11
 
 SRC_NAME =		main.c \
+				grid.c \
 				parser.c \
 				matrix.c \
 				vector.c \

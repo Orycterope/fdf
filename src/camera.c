@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "display.h"
 #include "libft.h"
 #include <math.h>
 
@@ -50,7 +51,7 @@ void			rotate_camera(char axe, char sens)
 	camera.dir[2] = -camera.dir[2];
 }	
 
-t_matrix_four	*get_projection_matrix()
+t_matrix_four	*get_projection_matrix() //static
 {
 	t_matrix_four	m;
 	t_vector		s;
@@ -76,13 +77,13 @@ t_matrix_four	*get_projection_matrix()
 	return (multiply_matrixes(m, t));
 }
 
-t_grid			*project_grid(t_grid *g)
+void			project_grid(t_grid *g)
 {
 	t_matrix_four	*proj_m;
 
+	g = cpy_grid(g);
 	proj_m = get_projection_matrix();
-	//copy grid !
 	apply_matrix_to_grid(*proj_m, g);
 	free(proj_m);
-	return (NULL); // return new grid !
+	display_grid(g); //render ?
 }

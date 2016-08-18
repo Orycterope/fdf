@@ -23,7 +23,7 @@ static void	test_transform(t_grid *grid) //
 	apply_matrix_to_grid(m, grid);
 }
 	
-void	print_tab(float *matrix, int x, int y) // DEBUG
+void		print_tab(float *matrix, int x, int y) // DEBUG
 {
 	    int		i, j;
 		for (i = 0; i < y; ++i)
@@ -61,7 +61,26 @@ static void	test_multiplication()
 	ft_printf("OK\n");
 }
 
-int	main(int ac, char **av)
+int			key_callback(int keycode, void *param)
+{
+	if (keycode == KEY_W)
+		rotate_camera('x', 1);
+	else if (keycode == KEY_S)
+		rotate_camera('x', -1);
+	else if (keycode == KEY_A)
+		rotate_camera('y', 1);
+	else if (keycode == KEY_D)
+		rotate_camera('y', -1);
+	else
+	{
+		printf("pressed keycode %d\n", keycode);	 //
+		return (0);
+	}
+	project_grid(param);
+	return (0);
+}
+
+int			main(int ac, char **av)
 {
 	t_grid	*grid;
 	int		fd;
@@ -86,11 +105,10 @@ int	main(int ac, char **av)
 	init_mlx();
 	init_camera();
 	test_transform(grid);
-	display_grid(grid);
+	//display_grid(grid);
 	rotate_camera('y', 1);
-	(void)project_grid(grid);
-	display_grid(grid);
+	project_grid(grid);
+	mlx_key_hook(display.win, key_callback, grid);
 	mlx_loop(display.mlx_ptr);
-//	print_tab(grid->tab, grid->width, grid->height);
 	return (0);
 }

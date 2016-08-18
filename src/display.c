@@ -52,4 +52,5 @@ void		display_grid(t_grid *grid)
 		}
 		y++;
 	}
+	free_grid(grid);
 }

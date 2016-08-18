@@ -14,6 +14,6 @@ extern t_camera	camera;
 
 void			init_camera();
 void			rotate_camera(char axe, char sens);
-t_grid			*project_grid(t_grid *g);
+void			project_grid(t_grid *g);
 
 #endif

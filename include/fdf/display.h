@@ -4,6 +4,10 @@
 # define WIN_WIDTH 800
 # define WIN_HEIGHT 600
 # define WIN_TITLE "fdf"
+# define KEY_W 119
+# define KEY_S 115
+# define KEY_A 97
+# define KEY_D 100
 
 typedef struct		s_display
 {

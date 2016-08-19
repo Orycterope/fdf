@@ -52,5 +52,6 @@ void		display_grid(t_grid *grid)
 		}
 		y++;
 	}
+	draw_lines(grid);
 	free_grid(grid);
 }

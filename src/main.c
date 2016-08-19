@@ -106,7 +106,7 @@ int			main(int ac, char **av)
 	init_camera();
 	test_transform(grid);
 	//display_grid(grid);
-	rotate_camera('y', 1);
+	//rotate_camera('y', 1);
 	project_grid(grid);
 	mlx_key_hook(display.win, key_callback, grid);
 	mlx_loop(display.mlx_ptr);

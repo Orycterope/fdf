@@ -20,5 +20,6 @@ extern t_display	display;
 
 void				init_mlx();
 void				display_grid(t_grid *grid);
+void				draw_lines(t_grid *g);
 
 #endif

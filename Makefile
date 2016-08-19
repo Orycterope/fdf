@@ -38,6 +38,7 @@ SRC_NAME =		main.c \
 				display.c \
 				camera.c \
 				lines.c \
+				special_matrixes.c \
 
 HEADER_NAME = 	fdf.h \
 				matrix.h \

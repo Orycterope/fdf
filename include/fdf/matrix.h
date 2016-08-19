@@ -19,5 +19,7 @@ void			normalize_vector(t_vector *v);
 void			cross_product(t_vector *dest, t_vector u, t_vector v);
 void			get_reversed_vector(t_vector *dest, t_vector v);
 void			fill_identity_matrix(t_matrix_four *dest);
+t_matrix_four	*get_camera_offset_matrix();
+t_matrix_four	*get_perspective_matrix();
 
 #endif

@@ -2,12 +2,13 @@
 #include "display.h"
 #include "libft.h"
 #include <math.h>
+#include <stdio.h> //
 
 t_camera		camera;
 
 void			init_camera()
 {
-	fill_vector(&camera.pos, 0, 0, 10);
+	fill_vector(&camera.pos, 0, 0, 20);
 	fill_vector(&camera.dir, 0, 0, -1);
 }
 
@@ -49,6 +50,10 @@ void			rotate_camera(char axe, char sens)
 	camera.dir[0] = -camera.dir[0];
 	camera.dir[1] = -camera.dir[1];
 	camera.dir[2] = -camera.dir[2];
+	printf("camera: pos: x: %f, y: %f, z %f\n\t\tdir: x: %f, y: %f, z: %f\n",
+		camera.pos[0], camera.pos[1], camera.pos[2],
+		camera.dir[0], camera.dir[1], camera.dir[2]);
+
 }	
 
 t_matrix_four	*get_projection_matrix() //static
@@ -79,11 +84,23 @@ t_matrix_four	*get_projection_matrix() //static
 
 void			project_grid(t_grid *g)
 {
-	t_matrix_four	*proj_m;
+	t_matrix_four	*m1;
+	t_matrix_four	*m2;
+	//t_matrix_four	*res;
 
 	g = cpy_grid(g);
-	proj_m = get_projection_matrix();
-	apply_matrix_to_grid(*proj_m, g);
-	free(proj_m);
+	m1 = get_projection_matrix();
+	apply_matrix_to_grid(*m1, g);
+	/*m2 = get_perspective_matrix();
+	res = multiply_matrixes(*m1, *m2);
+	free(m1);
+	free(m2);
+	m1 = res;*/
+	m2 = get_camera_offset_matrix();
+	/*res = multiply_matrixes(*m1, *m2);
+	free(m1);
+	free(m2);
+	apply_matrix_to_grid(*res, g); */
+	apply_matrix_to_grid(*m2, g);
 	display_grid(g); //render ?
 }

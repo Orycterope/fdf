@@ -64,9 +64,9 @@ static void	test_multiplication()
 int			key_callback(int keycode, void *param)
 {
 	if (keycode == KEY_W)
-		rotate_camera('x', 1);
-	else if (keycode == KEY_S)
 		rotate_camera('x', -1);
+	else if (keycode == KEY_S)
+		rotate_camera('x', 1);
 	else if (keycode == KEY_A)
 		rotate_camera('y', 1);
 	else if (keycode == KEY_D)

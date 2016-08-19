@@ -9,10 +9,6 @@ static void draw_horizontal_line(int x1, int y1, int x2, int y2)
 	float	dy;
 	int		x;
 
-	x1 = x1 * 40 + WIN_WIDTH / 2;
-	y1 = y1 * 40 + WIN_WIDTH / 2;
-	x2 = x2 * 40 + WIN_WIDTH / 2;
-	y2 = y2 * 40 + WIN_WIDTH / 2;
 	dx = x2 - x1;
 	dy = y2 - y1;
 	x = x1;
@@ -32,10 +28,6 @@ static void draw_vertical_line(int x1, int y1, int x2, int y2)
 	float	dy;
 	int		y;
 
-	x1 = x1 * 40 + WIN_WIDTH / 2;
-	y1 = y1 * 40 + WIN_WIDTH / 2;
-	x2 = x2 * 40 + WIN_WIDTH / 2;
-	y2 = y2 * 40 + WIN_WIDTH / 2;
 	dx = x2 - x1;
 	dy = y2 - y1;
 	y = y1;
@@ -51,10 +43,10 @@ static void draw_vertical_line(int x1, int y1, int x2, int y2)
 
 static void try_draw_line(int x1, int y1, int x2, int y2)
 {
-	if ((x1 < -WIN_WIDTH / 2 && x2 < -WIN_WIDTH / 2)
-		|| (x1 > WIN_WIDTH / 2 && x2 > WIN_WIDTH / 2)
-		|| (y1 < -WIN_HEIGHT / 2 && y2 < -WIN_HEIGHT / 2)
-		|| (y1 > WIN_HEIGHT / 2 && y2 > WIN_HEIGHT / 2))
+	if ((x1 < 0 && x2 < 0)
+		|| (x1 > WIN_WIDTH && x2 > WIN_WIDTH)
+		|| (y1 < 0 && y2 < 0)
+		|| (y1 > WIN_HEIGHT && y2 > WIN_HEIGHT))
 		return ;
 		
 	if ((y2 - y1) < (x2 - x1))

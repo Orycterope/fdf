@@ -44,8 +44,8 @@ void		display_grid(t_grid *grid)
 				(int)grid->tab[y][x][0], (int)grid->tab[y][x][1],
 				0xFFFFFF);*/
 			mlx_string_put(display.mlx_ptr, display.win,
-				(int)grid->tab[y][x][0] * 40 + WIN_WIDTH / 2,
-				(int)grid->tab[y][x][1] * 40 + WIN_HEIGHT / 2,
+				(int)grid->tab[y][x][0],
+				(int)grid->tab[y][x][1],
 				0xFFFFFF, ft_itoa((int)grid->tab[y][x][2]));
 //			printf("Puting vertex at x: %f, y: %f, z: %f\n", grid->tab[y][x][0], grid->tab[y][x][1], grid->tab[y][x][2]); //
 			x++;

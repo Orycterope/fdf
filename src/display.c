@@ -18,11 +18,11 @@ int	destroy_win(void *d) //really used ?
 void		init_mlx()
 {
 	display.mlx_ptr = mlx_init();
-	display.win = mlx_new_window(display.mlx_ptr, 
+	display.win = mlx_new_window(display.mlx_ptr,
 		WIN_WIDTH, WIN_HEIGHT, WIN_TITLE);
 	if (display.win == NULL)
 	{
-		ft_putstr_fd("Error while creating mlx window", 2);
+		ft_putstr_fd("Error while (creating mlx window", 2);
 		exit(1);
 	}
 	mlx_hook(display.win, 17, (1L<<17), destroy_win, &display);
@@ -40,14 +40,14 @@ void		display_grid(t_grid *grid)
 		x = 0;
 		while (x < grid->width)
 		{
-			/*mlx_pixel_put(display.mlx_ptr, display.win, 
+			/*mlx_pixel_put(display.mlx_ptr, display.win,
 				(int)grid->tab[y][x][0], (int)grid->tab[y][x][1],
 				0xFFFFFF);*/
-			mlx_string_put(display.mlx_ptr, display.win, 
-				(int)grid->tab[y][x][0] * 40 + WIN_WIDTH / 2, 
+			mlx_string_put(display.mlx_ptr, display.win,
+				(int)grid->tab[y][x][0] * 40 + WIN_WIDTH / 2,
 				(int)grid->tab[y][x][1] * 40 + WIN_HEIGHT / 2,
 				0xFFFFFF, ft_itoa((int)grid->tab[y][x][2]));
-			printf("Puting vertex at x: %f, y: %f, z: %f\n", grid->tab[y][x][0], grid->tab[y][x][1], grid->tab[y][x][2]); //
+//			printf("Puting vertex at x: %f, y: %f, z: %f\n", grid->tab[y][x][0], grid->tab[y][x][1], grid->tab[y][x][2]); //
 			x++;
 		}
 		y++;

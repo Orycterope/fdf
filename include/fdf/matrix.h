@@ -9,7 +9,7 @@
 }					t_matrix;
 */
 
-typedef float	t_vector[4];
+typedef float	t_vector[3];
 typedef float	t_matrix_four[4][4];
 
 t_matrix_four	*multiply_matrixes(t_matrix_four a, t_matrix_four b);

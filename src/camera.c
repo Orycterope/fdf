@@ -75,7 +75,7 @@ t_matrix_four	*get_projection_matrix() //static
 	normalize_vector(&u);
 	ft_memcpy(&(m[0]), &s, sizeof(t_vector));
 	ft_memcpy(&(m[1]), &u, sizeof(t_vector));
-	get_reversed_vector(&(m[2]), camera.dir);
+	get_reversed_vector((t_vector*)&(m[2]), camera.dir);
 	m[3][3] = 1;
 	fill_identity_matrix(&t);
 	t[0][3] = -camera.pos[0];
@@ -84,15 +84,17 @@ t_matrix_four	*get_projection_matrix() //static
 	return (multiply_matrixes(m, t));
 }
 
-void			project_grid(t_grid *g)
+void			project_grid(t_grid *g) // matrix multiplication is reversed
 {
 	t_matrix_four	*m1;
 	t_matrix_four	*m2;
-	//t_matrix_four	*res;
+	t_matrix_four	*res;
 
 	g = cpy_grid(g);
 	m1 = get_projection_matrix();
-	apply_matrix_to_grid(*m1, g);
+	m2 = get_camera_offset_matrix();
+	res = multiply_matrixes(*m2, *m1);
+	apply_matrix_to_grid(*res, g);
 	/*m2 = get_perspective_matrix();
 	res = multiply_matrixes(*m1, *m2);
 	free(m1);
@@ -103,6 +105,6 @@ void			project_grid(t_grid *g)
 	free(m1);
 	free(m2);
 	apply_matrix_to_grid(*res, g); */
-	apply_matrix_to_grid(*m2, g);
+//	apply_matrix_to_grid(*m2, g);
 	display_grid(g); //render ?
 }

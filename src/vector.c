@@ -7,7 +7,6 @@ void		fill_vector(t_vector *v, float x, float y, float z)
 	(*v)[0] = x;
 	(*v)[1] = y;
 	(*v)[2] = z;
-	(*v)[3] = 1;
 }
 
 void		normalize_vector(t_vector *v)
@@ -25,7 +24,6 @@ void		cross_product(t_vector *dest, t_vector u, t_vector v)
 	(*dest)[0] = u[1] * v[2] - u[2] * v[1];
 	(*dest)[1] = u[2] * v[0] - u[0] * v[2];
 	(*dest)[2] = u[0] * v[1] - u[1] * v[0];
-	(*dest)[3] = 1;
 }
 
 void		get_reversed_vector(t_vector *dest, t_vector v)

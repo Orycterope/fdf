@@ -32,22 +32,19 @@ t_matrix_four	*multiply_matrixes(t_matrix_four a, t_matrix_four b)
 
 t_vector		*multiply_matrix_vector(t_matrix_four m, t_vector v)
 {
-	int			y;
 	t_vector	*new;
-	int			i;
+	float		w;
 
 	new = (t_vector*)ft_memalloc(sizeof(t_vector));
-	y = 0;
-	while (y < 4)
+	(*new)[0] = m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2] + m[0][3];
+	(*new)[1] = m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2] + m[1][3];
+	(*new)[2] = m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2] + m[2][3];
+	w = m[3][0] * v[0] + m[3][1] * v[1] + m[3][2] * v[2] + m[3][3];
+	if (w != 1)
 	{
-		(*new)[y] = 0;
-		i = 0;
-		while (i < 4)
-		{
-			(*new)[y] += m[y][i] * v[i];
-			i++;
-		}
-		y++;
+		(*new)[0] /= w;
+		(*new)[1] /= w;
+		(*new)[2] /= w;
 	}
 	return (new);
 }

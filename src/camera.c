@@ -10,6 +10,7 @@ void			init_camera()
 {
 	fill_vector(&camera.pos, 0, 0, 20);
 	fill_vector(&camera.dir, 0, 0, -1);
+	fill_vector(&camera.up, 0, 1, 0);
 }
 
 static void		get_rotation_matrix(t_matrix_four *m, char axe, float angle)
@@ -39,21 +40,25 @@ void			rotate_camera(char axe, char sens)
 	t_matrix_four	rot_m;
 	float			angle;
 	t_vector		*new_pos;
+	t_vector		*new_up;
 
 	angle = (sens > 0) ? ROTATION_ANGLE : -ROTATION_ANGLE;
 	get_rotation_matrix(&rot_m, axe, angle);
 	new_pos = multiply_matrix_vector(rot_m, camera.pos);
+	new_up = multiply_matrix_vector(rot_m, camera.up);
 	ft_memcpy(&(camera.pos), new_pos, sizeof(t_vector));
+	ft_memcpy(&(camera.up), new_up, sizeof(t_vector));
 	free(new_pos);
+	free(new_up);
 	ft_memcpy(&(camera.dir), &(camera.pos), sizeof(t_vector));
 	normalize_vector(&(camera.dir));
 	camera.dir[0] = -camera.dir[0];
 	camera.dir[1] = -camera.dir[1];
 	camera.dir[2] = -camera.dir[2];
-	printf("camera: pos: x: %f, y: %f, z %f\n\t\tdir: x: %f, y: %f, z: %f\n",
+	printf("camera: pos: x: %f, y: %f, z %f\n\t\tdir: x: %f, y: %f, z: %f\n\t\tup:  x: %f, y: %f, z: %f\n",
 		camera.pos[0], camera.pos[1], camera.pos[2],
-		camera.dir[0], camera.dir[1], camera.dir[2]);
-
+		camera.dir[0], camera.dir[1], camera.dir[2],
+		camera.up[0], camera.up[1], camera.up[2]);
 }	
 
 t_matrix_four	*get_projection_matrix() //static
@@ -61,13 +66,10 @@ t_matrix_four	*get_projection_matrix() //static
 	t_matrix_four	m;
 	t_vector		s;
 	t_vector		u;
-	t_vector		up;
 	t_matrix_four	t;
 
 	ft_bzero(&m, sizeof(t_matrix_four));
-	ft_bzero(&up, sizeof(t_vector));
-	up[1] = 1;
-	cross_product(&s, camera.dir, up);
+	cross_product(&s, camera.dir, camera.up);
 	cross_product(&u, s, camera.dir);
 	normalize_vector(&s);
 	normalize_vector(&u);

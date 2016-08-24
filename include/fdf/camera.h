@@ -8,6 +8,7 @@ typedef struct	s_camera
 {
 	t_vector	pos;
 	t_vector	dir;
+	t_vector	up;
 }				t_camera;
 
 extern t_camera	camera;

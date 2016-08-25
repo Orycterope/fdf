@@ -68,7 +68,10 @@ static void		fill_grid(t_grid *grid, t_list *lst)
 		col = 0;
 		while (col < grid->width)
 		{
-			fill_vector(&(grid->tab[line][col]), col, line, (float)ft_atoi(tab[col]) / 10);
+			fill_vector(&(grid->tab[line][col]), 
+				col - grid->width / 2, 
+				line - grid->height / 2, 
+				(float)ft_atoi(tab[col]) / 10);
 			/*grid->tab[line][col][0] = col;
 			grid->tab[line][col][1] = line;
 			grid->tab[line][col][2] = ft_atoi(tab[col]);

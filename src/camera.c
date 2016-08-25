@@ -59,10 +59,10 @@ void			rotate_camera(char axe, char sens)
 	camera.dir[0] = -camera.dir[0];
 	camera.dir[1] = -camera.dir[1];
 	camera.dir[2] = -camera.dir[2];
-	printf("camera: pos: x: %f, y: %f, z %f\n\t\tdir: x: %f, y: %f, z: %f\n\t\tup:  x: %f, y: %f, z: %f\n",
+/*	printf("camera: pos: x: %f, y: %f, z %f\n\t\tdir: x: %f, y: %f, z: %f\n\t\tup:  x: %f, y: %f, z: %f\n",
 		camera.pos[0], camera.pos[1], camera.pos[2],
 		camera.dir[0], camera.dir[1], camera.dir[2],
-		camera.up[0], camera.up[1], camera.up[2]);
+		camera.up[0], camera.up[1], camera.up[2]);*/
 }	
 
 void			translate_camera(int axe, int sens)

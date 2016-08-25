@@ -64,26 +64,3 @@ void 	try_draw_line(int x1, int y1, int x2, int y2)
 			draw_vertical_line(x2, y2, x1, y1);
 	}
 }
-
-void		draw_lines(t_grid *g)
-{
-	int	j;
-	int	i;
-
-	j = 0;
-	while (j < g->height)
-	{
-		i = 0;
-		while (i < g->width)
-		{
-			if (j > 0)
-				try_draw_line(g->tab[j - 1][i][0], g->tab[j - 1][i][1], 
-					g->tab[j][i][0], g->tab[j][i][1]); 
-			if (i > 0)
-				try_draw_line(g->tab[j][i - 1][0], g->tab[j][i - 1][1], 
-					g->tab[j][i][0], g->tab[j][i][1]); 
-			i++;
-		}
-		j++;
-	}
-}

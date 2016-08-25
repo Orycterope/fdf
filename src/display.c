@@ -28,15 +28,12 @@ void		init_mlx()
 	mlx_hook(display.win, 17, (1L<<17), destroy_win, &display);
 }
 
-void		display_grid(t_grid *g, t_list *lst)
+void		display_grid(t_grid *g, t_list *l)
 {
-	//int	x;
-	//int	y;
 	t_tupple	c;
-	t_list		*l;
+	t_list		*next;
 
 	mlx_clear_window(display.mlx_ptr, display.win);
-	l = lst;
 	while (l != NULL)
 	{
 		c = *((t_tupple*)l->content);
@@ -57,10 +54,11 @@ void		display_grid(t_grid *g, t_list *lst)
 		if (c.x < g->width - 1 && !is_displayable(g->tab[c.y][c.x + 1]))
 			try_draw_line(g->tab[c.y][c.x + 1][0], g->tab[c.y][c.x + 1][1], 
 				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
-		l = l->next;
+		next = l->next;
+		free(l->content);
+		free(l);
+		l = next;
 	}
-	//draw_lines(grid);
-	//delete lst !
 	free_grid(g);
 }
 

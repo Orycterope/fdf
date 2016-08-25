@@ -1,7 +1,7 @@
 #include "display.h"
 #include <mlx.h>
 #define ROUND(x) ((int)(x + 0.5))
-#define ABS(x) (x < 0 ? -x : x)
+#define ABS(x) (x < 0 ? -(x) : (x))
 
 static void draw_horizontal_line(int x1, int y1, int x2, int y2)
 {
@@ -49,7 +49,7 @@ static void try_draw_line(int x1, int y1, int x2, int y2)
 		|| (y1 > WIN_HEIGHT && y2 > WIN_HEIGHT))
 		return ;
 		
-	if ((y2 - y1) < (x2 - x1))
+	if (ABS(y2 - y1) < ABS(x2 - x1))
 	{
 		if (x2 > x1)
 			draw_horizontal_line(x1, y1, x2, y2);

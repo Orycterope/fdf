@@ -71,6 +71,10 @@ int			key_callback(int keycode, void *param)
 		rotate_camera('y', 1);
 	else if (keycode == KEY_D)
 		rotate_camera('y', -1);
+	else if (keycode == KEY_Z)
+		translate_camera(2, 1);
+	else if (keycode == KEY_X)
+		translate_camera(2, -1);
 	else
 	{
 		printf("pressed keycode %d\n", keycode);	 //
@@ -103,7 +107,7 @@ int			main(int ac, char **av)
 		exit(1);
 	}
 	init_mlx();
-	init_camera();
+	init_camera(grid);
 	test_transform(grid);
 	//display_grid(grid);
 	//rotate_camera('y', 1);

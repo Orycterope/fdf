@@ -67,5 +67,6 @@ void		display_grid(t_grid *g, t_list *lst)
 int			is_displayable(t_vector v)
 {
 		return(v[0] >= 0 && v[0] <= WIN_WIDTH
-				&& v[1] >= 0 && v[1] <= WIN_HEIGHT);
+				&& v[1] >= 0 && v[1] <= WIN_HEIGHT
+				&& v[2] >= 0 && v[2] <= 1);
 }

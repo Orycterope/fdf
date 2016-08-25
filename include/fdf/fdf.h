@@ -2,6 +2,9 @@
 # define FDF_H
 # include "matrix.h"
 # include "libft.h"
+# define FOV_HALF_ANGLE 50
+# define RAD(a) (a * M_PI / 180)
+# define MAX(a, b) (a > b ? a : b)
 
 typedef struct		s_grid
 {
@@ -22,6 +25,7 @@ t_grid				*cpy_grid(t_grid *g);
 void				free_grid(t_grid *g);
 int					is_displayable(t_vector v);
 void 				try_draw_line(int x1, int y1, int x2, int y2);
+void				translate_camera(int axe, int sens);
 
 # include "display.h"
 #endif

@@ -2,8 +2,6 @@
 #include <math.h>
 #define NEAR 1
 #define FAR 40
-#define FOV_HALF_ANGLE 50
-#define RAD(a) (a * M_PI / 180)
 
 t_matrix_four	*get_camera_offset_matrix()
 {

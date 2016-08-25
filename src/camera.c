@@ -1,14 +1,18 @@
 #include "camera.h"
 #include "display.h"
 #include "libft.h"
+#include "fdf.h"
 #include <math.h>
 #include <stdio.h> //
 
 t_camera		camera;
 
-void			init_camera()
+void			init_camera(t_grid *grid)
 {
-	fill_vector(&camera.pos, 0, 0, 20);
+	float	z_pos;
+
+	z_pos = MAX(grid->width, grid->height) / tan(RAD(FOV_HALF_ANGLE)) * 1.2; 
+	fill_vector(&camera.pos, 0, 0, z_pos);
 	fill_vector(&camera.dir, 0, 0, -1);
 	fill_vector(&camera.up, 0, 1, 0);
 }
@@ -60,6 +64,17 @@ void			rotate_camera(char axe, char sens)
 		camera.dir[0], camera.dir[1], camera.dir[2],
 		camera.up[0], camera.up[1], camera.up[2]);
 }	
+
+void			translate_camera(int axe, int sens)
+{
+	t_vector	v;
+
+	ft_bzero(&v, sizeof(t_vector));
+	v[axe] = sens;
+	camera.pos[0] += v[0];
+	camera.pos[1] += v[1];
+	camera.pos[2] += v[2];
+}
 
 t_matrix_four	*get_projection_matrix() //static
 {

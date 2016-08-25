@@ -41,7 +41,7 @@ static void draw_vertical_line(int x1, int y1, int x2, int y2)
 	}
 }
 
-static void try_draw_line(int x1, int y1, int x2, int y2)
+void 	try_draw_line(int x1, int y1, int x2, int y2)
 {
 	if ((x1 < 0 && x2 < 0)
 		|| (x1 > WIN_WIDTH && x2 > WIN_WIDTH)

@@ -1,6 +1,7 @@
 #include "fdf.h"
 #include "matrix.h"
 #include "libft.h"
+#include <stdio.h> //
 
 t_matrix_four	*multiply_matrixes(t_matrix_four a, t_matrix_four b)
 {
@@ -49,28 +50,34 @@ t_vector		*multiply_matrix_vector(t_matrix_four m, t_vector v)
 	return (new);
 }
 
-void			apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
+t_list			*apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
 {
-	int			x;
-	int			y;
+	//int			x;
+	//int			y;
 	t_vector	*new;
+	t_list		*lst;
+	t_tupple	coord;
 
-	y = 0;
-	while (y < grid->height)
+	lst = NULL;
+	coord.y = 0;
+	while (coord.y < grid->height)
 	{
-		x = 0;
-		while (x < grid->width)
+		coord.x = 0;
+		while (coord.x < grid->width)
 		{
-			new = multiply_matrix_vector(m, grid->tab[y][x]);
-			ft_memcpy(&(grid->tab[y][x]), new, sizeof(t_vector));
+			new = multiply_matrix_vector(m, grid->tab[coord.y][coord.x]);
+			ft_memcpy(&(grid->tab[coord.y][coord.x]), new, sizeof(t_vector));
+			if (is_displayable(*new))
+				ft_lstappend(&lst, ft_lstnew(&coord, sizeof(t_tupple)));
 			free(new);
-			x++;
+			coord.x++;
 		}
-		y++;
+		coord.y++;
 	}
+	return (lst);
 }
 
-void			fill_identity_matrix(t_matrix_four *dest)
+void			fill_identity_matrix(t_matrix_four *dest) //really used ???
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 
 t_display	display;
 
-int	destroy_win(void *d) //really used ?
+int			destroy_win(void *d) //really used ?
 {
 	(void)d;
 	ft_putstr("In destroy function");
@@ -28,30 +28,44 @@ void		init_mlx()
 	mlx_hook(display.win, 17, (1L<<17), destroy_win, &display);
 }
 
-void		display_grid(t_grid *grid)
+void		display_grid(t_grid *g, t_list *lst)
 {
-	int	x;
-	int	y;
+	//int	x;
+	//int	y;
+	t_tupple	c;
+	t_list		*l;
 
 	mlx_clear_window(display.mlx_ptr, display.win);
-	y = 0;
-	while (y < grid->height)
+	l = lst;
+	while (l != NULL)
 	{
-		x = 0;
-		while (x < grid->width)
-		{
-			/*mlx_pixel_put(display.mlx_ptr, display.win,
-				(int)grid->tab[y][x][0], (int)grid->tab[y][x][1],
-				0xFFFFFF);*/
-			mlx_string_put(display.mlx_ptr, display.win,
-				(int)grid->tab[y][x][0],
-				(int)grid->tab[y][x][1],
-				0xFFFFFF, ft_itoa((int)grid->tab[y][x][2]));
-//			printf("Puting vertex at x: %f, y: %f, z: %f\n", grid->tab[y][x][0], grid->tab[y][x][1], grid->tab[y][x][2]); //
-			x++;
-		}
-		y++;
+		c = *((t_tupple*)l->content);
+	/*mlx_string_put(display.mlx_ptr, display.win,
+		(int)g->tab[c.y][c.x][0],
+		(int)g->tab[c.y][c.x][1],
+		0xFFFFFF, ft_itoa((int)g->tab[c.y][c.x][2])); */
+//		printf("Puting vertex at x: %f, y: %f, z: %f\n", grid->tab[y][x][0], grid->tab[y][x][1], grid->tab[y][x][2]); //
+		if (c.y > 0)
+			try_draw_line(g->tab[c.y - 1][c.x][0], g->tab[c.y - 1][c.x][1], 
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+		if (c.x > 0)
+			try_draw_line(g->tab[c.y][c.x - 1][0], g->tab[c.y][c.x - 1][1], 
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+		if (c.y < g->height - 1 && !is_displayable(g->tab[c.y + 1][c.x]))
+			try_draw_line(g->tab[c.y + 1][c.x][0], g->tab[c.y + 1][c.x][1], 
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+		if (c.x < g->width - 1 && !is_displayable(g->tab[c.y][c.x + 1]))
+			try_draw_line(g->tab[c.y][c.x + 1][0], g->tab[c.y][c.x + 1][1], 
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+		l = l->next;
 	}
-	draw_lines(grid);
-	free_grid(grid);
+	//draw_lines(grid);
+	//delete lst !
+	free_grid(g);
+}
+
+int			is_displayable(t_vector v)
+{
+		return(v[0] >= 0 && v[0] <= WIN_WIDTH
+				&& v[1] >= 0 && v[1] <= WIN_HEIGHT);
 }

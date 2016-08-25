@@ -88,25 +88,20 @@ void			project_grid(t_grid *g) // matrix multiplication is reversed
 {
 	t_matrix_four	*m1;
 	t_matrix_four	*m2;
-	//t_matrix_four	*res;
+	t_matrix_four	*res;
+	t_list			*visible_vertices;
 
 	g = cpy_grid(g);
-	m1 = get_projection_matrix();
-	//m2 = get_camera_offset_matrix();
-	//res = multiply_matrixes(*m2, *m1);
-	apply_matrix_to_grid(*m1, g);
+	m1 = get_camera_offset_matrix();
 	m2 = get_perspective_matrix();
-	apply_matrix_to_grid(*m2, g);
-	//res = multiply_matrixes(*m1, *m2);
-	//free(m1);
-	//free(m2);
-	//m1 = res;
-	m2 = get_camera_offset_matrix();
-	apply_matrix_to_grid(*m2, g);
-	/*res = multiply_matrixes(*m1, *m2);
+	res = multiply_matrixes(*m1, *m2);
 	free(m1);
 	free(m2);
-	apply_matrix_to_grid(*res, g); */
-//	apply_matrix_to_grid(*m2, g);
-	display_grid(g); //render ?
+	m1 = res;
+	m2 = get_projection_matrix();
+	res = multiply_matrixes(*m1, *m2);
+	free(m1);
+	free(m2);
+	visible_vertices = apply_matrix_to_grid(*res, g);
+	display_grid(g, visible_vertices);
 }

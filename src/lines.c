@@ -17,7 +17,7 @@ static void draw_pixel(int x, int y, unsigned int c, float intensity)
 	i = 0;
 	while (i * 8 < display.bits_per_pixel)
 	{
-		if ((unsigned char)color * intensity > display.img_tab[pos + i])
+		if ((unsigned char)color * intensity > (unsigned char)display.img_tab[pos + i])
 			display.img_tab[pos + i] = (unsigned char)color * intensity;
 		color >>= 8;
 		i++;

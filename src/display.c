@@ -25,7 +25,7 @@ void		init_mlx()
 		ft_putstr_fd("Error while (creating mlx window", 2);
 		exit(1);
 	}
-	mlx_hook(display.win, 17, (1L<<17), destroy_win, &display);
+	//mlx_hook(display.win, 17, (1L<<17), destroy_win, &display);
 }
 
 void		display_grid(t_grid *g, t_list *l)
@@ -43,17 +43,17 @@ void		display_grid(t_grid *g, t_list *l)
 		0xFFFFFF, ft_itoa((int)g->tab[c.y][c.x][2])); */
 //		printf("Puting vertex at x: %f, y: %f, z: %f\n", grid->tab[y][x][0], grid->tab[y][x][1], grid->tab[y][x][2]); //
 		if (c.y > 0)
-			try_draw_line(g->tab[c.y - 1][c.x][0], g->tab[c.y - 1][c.x][1], 
-				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+			try_draw_line(g->tab[c.y - 1][c.x][0], g->tab[c.y - 1][c.x][1],
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]);
 		if (c.x > 0)
-			try_draw_line(g->tab[c.y][c.x - 1][0], g->tab[c.y][c.x - 1][1], 
-				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+			try_draw_line(g->tab[c.y][c.x - 1][0], g->tab[c.y][c.x - 1][1],
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]);
 		if (c.y < g->height - 1 && !is_displayable(g->tab[c.y + 1][c.x]))
-			try_draw_line(g->tab[c.y + 1][c.x][0], g->tab[c.y + 1][c.x][1], 
-				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+			try_draw_line(g->tab[c.y + 1][c.x][0], g->tab[c.y + 1][c.x][1],
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]);
 		if (c.x < g->width - 1 && !is_displayable(g->tab[c.y][c.x + 1]))
-			try_draw_line(g->tab[c.y][c.x + 1][0], g->tab[c.y][c.x + 1][1], 
-				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]); 
+			try_draw_line(g->tab[c.y][c.x + 1][0], g->tab[c.y][c.x + 1][1],
+				g->tab[c.y][c.x][0], g->tab[c.y][c.x][1]);
 		next = l->next;
 		free(l->content);
 		free(l);
@@ -63,7 +63,7 @@ void		display_grid(t_grid *g, t_list *l)
 
 int			is_displayable(t_vector v)
 {
-		return(v[0] >= 0 && v[0] <= WIN_WIDTH
+		return (v[0] >= 0 && v[0] <= WIN_WIDTH
 				&& v[1] >= 0 && v[1] <= WIN_HEIGHT
 				&& v[2] >= 0 && v[2] <= 1);
 }

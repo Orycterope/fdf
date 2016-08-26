@@ -15,7 +15,10 @@ typedef struct		s_display
 {
 	void			*mlx_ptr;
 	void			*win;
-	void			*img;
+	char			*img_tab;
+	int				bits_per_pixel;
+	int				img_size_line;
+	int				img_endian;
 }					t_display;
 
 extern t_display	display;

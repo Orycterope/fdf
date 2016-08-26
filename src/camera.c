@@ -3,6 +3,7 @@
 #include "libft.h"
 #include "fdf.h"
 #include <math.h>
+#include <mlx.h>
 #include <stdio.h> //
 
 t_camera		camera;
@@ -11,7 +12,7 @@ void			init_camera(t_grid *grid)
 {
 	float	z_pos;
 
-	z_pos = MAX(grid->width, grid->height) / tan(RAD(FOV_HALF_ANGLE)) * 1.2; 
+	z_pos = MAX(grid->width, grid->height) / tan(RAD(FOV_HALF_ANGLE)) * 1.2;
 	fill_vector(&camera.pos, 0, 0, z_pos);
 	fill_vector(&camera.dir, 0, 0, -1);
 	fill_vector(&camera.up, 0, 1, 0);
@@ -63,7 +64,7 @@ void			rotate_camera(char axe, char sens)
 		camera.pos[0], camera.pos[1], camera.pos[2],
 		camera.dir[0], camera.dir[1], camera.dir[2],
 		camera.up[0], camera.up[1], camera.up[2]);*/
-}	
+}
 
 void			translate_camera(int axe, int sens)
 {
@@ -105,6 +106,7 @@ void			project_grid(t_grid *g) // matrix multiplication is reversed
 	t_matrix_four	*m2;
 	t_matrix_four	*res;
 	t_list			*visible_vertices;
+	void			*img;
 
 	g = cpy_grid(g);
 	m1 = get_camera_offset_matrix();
@@ -119,6 +121,11 @@ void			project_grid(t_grid *g) // matrix multiplication is reversed
 	free(m2);
 	visible_vertices = apply_matrix_to_grid(*res, g);
 	free(res);
+	img = mlx_new_image(display.mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+	display.img_tab = mlx_get_data_addr(img,
+		&display.bits_per_pixel, &display.img_size_line, &display.img_endian);
 	display_grid(g, visible_vertices);
+	mlx_put_image_to_window(display.mlx_ptr, display.win, img, 0, 0);
+	mlx_destroy_image(display.mlx_ptr, img);
 	free_grid(g);
 }

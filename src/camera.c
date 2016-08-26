@@ -118,5 +118,7 @@ void			project_grid(t_grid *g) // matrix multiplication is reversed
 	free(m1);
 	free(m2);
 	visible_vertices = apply_matrix_to_grid(*res, g);
+	free(res);
 	display_grid(g, visible_vertices);
+	free_grid(g);
 }

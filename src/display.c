@@ -59,7 +59,6 @@ void		display_grid(t_grid *g, t_list *l)
 		free(l);
 		l = next;
 	}
-	free_grid(g);
 }
 
 int			is_displayable(t_vector v)

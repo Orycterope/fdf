@@ -11,6 +11,8 @@ typedef struct		s_grid
 	int				height;
 	int				width;
 	t_vector		**tab;
+	float			max_height;
+	float			min_height;
 }					t_grid;
 
 typedef struct		s_tupple

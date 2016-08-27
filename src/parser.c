@@ -60,30 +60,26 @@ static void		fill_grid(t_grid *grid, t_list *lst)
 	int		col;
 	t_list	*next;
 	char	**tab;
+	float	z;
 
-	line = 0;
-	while (line < grid->height)
+	line = -1;
+	while (++line < grid->height)
 	{
 		tab = (char**)lst->content;
-		col = 0;
-		while (col < grid->width)
+		col = -1;
+		while (++col < grid->width)
 		{
+			z = (float)ft_atoi(tab[col]) / 10;
 			fill_vector(&(grid->tab[line][col]), 
-				col - grid->width / 2, 
-				line - grid->height / 2, 
-				(float)ft_atoi(tab[col]) / 10);
-			/*grid->tab[line][col][0] = col;
-			grid->tab[line][col][1] = line;
-			grid->tab[line][col][2] = ft_atoi(tab[col]);
-			grid->tab[line][col][3] = 1;*/
+				col - grid->width / 2, line - grid->height / 2, z);
 			free(tab[col]);
-			col++;
+			grid->max_height = z > grid->max_height ? z : grid->max_height;
+			grid->min_height = z < grid->min_height ? z : grid->min_height;
 		}
 		next = lst->next;
 		free(lst->content);
 		free(lst);
 		lst = next;
-		line++;
 	}
 }
 

@@ -4,7 +4,8 @@
 #include "libft.h"
 #include <stdio.h> // remove me !
 
-t_display	display;
+t_display		display;
+t_matrix_four	m2w_matrix;
 
 int			destroy_win(void *d) //really used ?
 {

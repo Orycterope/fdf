@@ -18,7 +18,7 @@ void			init_camera(t_grid *grid)
 	fill_vector(&camera.up, 0, 1, 0);
 }
 
-static void		get_rotation_matrix(t_matrix_four *m, char axe, float angle)
+void			get_rotation_matrix(t_matrix_four *m, char axe, float angle)
 {
 	ft_bzero(m, sizeof(t_matrix_four));
 	(*m)[3][3] = 1;
@@ -100,15 +100,12 @@ t_matrix_four	*get_projection_matrix() //static
 	return (multiply_matrixes(m, t));
 }
 
-void			project_grid(t_grid *g) // matrix multiplication is reversed
+t_matrix_four	*get_combination_matrix(t_matrix_four *m2w)
 {
-	t_matrix_four	*m1;
 	t_matrix_four	*m2;
+	t_matrix_four	*m1;
 	t_matrix_four	*res;
-	t_list			*visible_vertices;
-	void			*img;
-
-	g = cpy_grid(g);
+	
 	m1 = get_camera_offset_matrix();
 	m2 = get_perspective_matrix();
 	res = multiply_matrixes(*m1, *m2);
@@ -119,8 +116,22 @@ void			project_grid(t_grid *g) // matrix multiplication is reversed
 	res = multiply_matrixes(*m1, *m2);
 	free(m1);
 	free(m2);
-	visible_vertices = apply_matrix_to_grid(*res, g);
-	free(res);
+	m1 = res;
+	res = multiply_matrixes(*m1, *m2w);
+	free(m1);
+	return (res);
+}
+
+void			project_grid(t_grid *g, t_matrix_four *m2w) // matrix multiplication is reversed
+{
+	t_list			*visible_vertices;
+	void			*img;
+	t_matrix_four	*combined_matrix;
+
+	g = cpy_grid(g);
+	combined_matrix = get_combination_matrix(m2w);
+	visible_vertices = apply_matrix_to_grid(*combined_matrix, g);
+	free(combined_matrix);
 	img = mlx_new_image(display.mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	display.img_tab = mlx_get_data_addr(img,
 		&display.bits_per_pixel, &display.img_size_line, &display.img_endian);

@@ -23,23 +23,31 @@ void		print_tab(float *matrix, int x, int y) // DEBUG
 int			key_callback(int keycode, void *param)
 {
 	if (keycode == KEY_W)
-		rotate_camera('x', -1);
+		get_new_m2w_matrix('x', -1, 1);
 	else if (keycode == KEY_S)
-		rotate_camera('x', 1);
+		get_new_m2w_matrix('x', 1, 1);
 	else if (keycode == KEY_A)
-		rotate_camera('y', 1);
+		get_new_m2w_matrix('y', 1, 1);
 	else if (keycode == KEY_D)
-		rotate_camera('y', -1);
-	else if (keycode == KEY_Z)
-		translate_camera(2, 1);
-	else if (keycode == KEY_X)
-		translate_camera(2, -1);
+		get_new_m2w_matrix('y', -1, 1);
+	else if (keycode == KEY_I)
+		get_new_m2w_matrix(1, 1, 0);
+	else if (keycode == KEY_K)
+		get_new_m2w_matrix(1, -1, 0);
+	else if (keycode == KEY_J)
+		get_new_m2w_matrix(0, 1, 0);
+	else if (keycode == KEY_L)
+		get_new_m2w_matrix(0, -1, 0);
+	else if (keycode == KEY_U)
+		get_new_m2w_matrix(2, 1, 0); //translate camera
+	else if (keycode == KEY_O)
+		get_new_m2w_matrix(2, -1, 0);
 	else
 	{
 		printf("pressed keycode %d\n", keycode);	 //
 		return (0);
 	}
-	project_grid(param);
+	project_grid(param, &m2w_matrix);
 	return (0);
 }
 
@@ -66,7 +74,8 @@ int			main(int ac, char **av)
 	}
 	init_mlx();
 	init_camera(grid);
-	project_grid(grid);
+	fill_identity_matrix(&m2w_matrix);
+	project_grid(grid, &m2w_matrix);
 	mlx_key_hook(display.win, key_callback, grid);
 	mlx_loop(display.mlx_ptr);
 	return (0);

@@ -8,8 +8,12 @@
 # define KEY_S 115
 # define KEY_A 97
 # define KEY_D 100
-# define KEY_Z 122
-# define KEY_X 120
+# define KEY_I 105
+# define KEY_K 107
+# define KEY_J 106
+# define KEY_L 108
+# define KEY_U 117
+# define KEY_O 111
 
 typedef struct		s_display
 {
@@ -22,6 +26,7 @@ typedef struct		s_display
 }					t_display;
 
 extern t_display	display;
+extern t_matrix_four	m2w_matrix;
 
 void				init_mlx();
 void				display_grid(t_grid *grid, t_list *lst);

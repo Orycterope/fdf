@@ -5,12 +5,20 @@
 # define FOV_HALF_ANGLE 50
 # define RAD(a) (a * M_PI / 180)
 # define MAX(a, b) (a > b ? a : b)
+# define HIGH_COLOR 0xFF0000
+# define LOW_COLOR 0x0000FF
+
+typedef struct		s_vertex
+{
+	t_vector		pos;
+	int				color;
+}					t_vertex;
 
 typedef struct		s_grid
 {
 	int				height;
 	int				width;
-	t_vector		**tab;
+	t_vertex		**tab;
 	float			max_height;
 	float			min_height;
 }					t_grid;

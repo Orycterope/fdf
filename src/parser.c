@@ -3,6 +3,13 @@
 #include "get_next_line.h"
 #include "matrix.h"
 #define IS_DECIMAL_CHAR(c) (c >= '0' && c <= '9')
+#define GET_BLUE(x)		(x & 0xFF)
+#define GET_GREEN(x)	((x >> 8) & 0xFF)
+#define GET_RED(x)		((x >> 16) & 0xFF)
+#define TO_BLUE(x)		(((int)(x)) & 0xFF)
+#define TO_GREEN(x)		((((int)(x)) & 0xFF) << 8)
+#define TO_RED(x)		((((int)(x)) & 0xFF) << 16)
+
 
 static int		is_number(char **c)
 {
@@ -70,7 +77,7 @@ static void		fill_grid(t_grid *grid, t_list *lst)
 		while (++col < grid->width)
 		{
 			z = (float)ft_atoi(tab[col]) / 10;
-			fill_vector(&(grid->tab[line][col]), 
+			fill_vector(&(grid->tab[line][col].pos),
 				col - grid->width / 2, line - grid->height / 2, z);
 			free(tab[col]);
 			grid->max_height = z > grid->max_height ? z : grid->max_height;
@@ -83,23 +90,50 @@ static void		fill_grid(t_grid *grid, t_list *lst)
 	}
 }
 
+static void		fill_colors(t_grid *grid)
+{
+	int	line;
+	int	col;
+	int	color;
+	float relative;
+
+	line = -1;
+	while (++line < grid->height)
+	{
+		col = -1;
+		while (++col < grid->width)
+		{
+			relative = (grid->tab[line][col].pos[2] - grid->min_height) \
+				/ grid->max_height;
+			color = TO_RED(relative * (GET_RED(HIGH_COLOR) \
+					- GET_RED(LOW_COLOR)) + GET_RED(LOW_COLOR));
+			color |= TO_GREEN(relative * (GET_GREEN(HIGH_COLOR) \
+					- GET_GREEN(LOW_COLOR)) + GET_GREEN(LOW_COLOR));
+			color |= TO_BLUE(relative * (GET_BLUE(HIGH_COLOR) \
+					- GET_BLUE(LOW_COLOR)) + GET_BLUE(LOW_COLOR));
+			grid->tab[line][col].color = color;
+		}
+	}
+}
+
 static t_grid	*create_grid(t_list *lst, int line_length)
 {
 	int			line_nbr;
 	t_grid		*grid;
-	t_vector	**tab;
+	t_vertex	**tab;
 	int			i;
 
 	line_nbr = ft_lstlen(lst);
-	tab = (t_vector**)ft_memalloc(sizeof(t_vector*) * line_nbr);
+	tab = (t_vertex**)ft_memalloc(sizeof(t_vertex*) * line_nbr);
 	i = 0;
 	while (i < line_nbr)
-		tab[i++] = (t_vector*)ft_memalloc(sizeof(t_vector) * line_length);
+		tab[i++] = (t_vertex*)ft_memalloc(sizeof(t_vertex) * line_length);
 	grid = (t_grid*)ft_memalloc(sizeof(t_grid));
 	grid->height = line_nbr;
 	grid->width = line_length;
 	grid->tab = tab;
 	fill_grid(grid, lst);
+	fill_colors(grid);
 	return (grid);
 }
 

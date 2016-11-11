@@ -65,8 +65,8 @@ t_list			*apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
 		coord.x = 0;
 		while (coord.x < grid->width)
 		{
-			new = multiply_matrix_vector(m, grid->tab[coord.y][coord.x]);
-			ft_memcpy(&(grid->tab[coord.y][coord.x]), new, sizeof(t_vector));
+			new = multiply_matrix_vector(m, grid->tab[coord.y][coord.x].pos);
+			ft_memcpy(&(grid->tab[coord.y][coord.x].pos), new, sizeof(t_vector));
 			if (is_displayable(*new))
 				ft_lstadd(&lst, ft_lstnew(&coord, sizeof(t_tupple)));
 			free(new);

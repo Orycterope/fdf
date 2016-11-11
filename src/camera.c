@@ -105,7 +105,7 @@ t_matrix_four	*get_combination_matrix(t_matrix_four *m2w)
 	t_matrix_four	*m2;
 	t_matrix_four	*m1;
 	t_matrix_four	*res;
-	
+
 	m1 = get_camera_offset_matrix();
 	m2 = get_perspective_matrix();
 	res = multiply_matrixes(*m1, *m2);
@@ -136,7 +136,7 @@ void			project_grid(t_grid *g, t_matrix_four *m2w) // matrix multiplication is r
 	display.img_tab = mlx_get_data_addr(img,
 		&display.bits_per_pixel, &display.img_size_line, &display.img_endian);
 	display_grid(g, visible_vertices);
-	mlx_put_image_to_window(display.mlx_ptr, display.win, img, 0, 0);
+	//mlx_put_image_to_window(display.mlx_ptr, display.win, img, 0, 0);
 	mlx_destroy_image(display.mlx_ptr, img);
 	free_grid(g);
 }

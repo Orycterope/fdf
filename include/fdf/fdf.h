@@ -34,7 +34,7 @@ t_list				*apply_matrix_to_grid(t_matrix_four m, t_grid *grid);
 t_grid				*cpy_grid(t_grid *g);
 void				free_grid(t_grid *g);
 int					is_displayable(t_vector v);
-void				try_draw_line(int x1, int y1, int x2, int y2);
+void				try_draw_line(t_vertex v1, t_vertex v2);
 void				translate_camera(int axe, int sens);
 void				get_new_m2w_matrix(char axe, char sens, char rot_trans);
 void				get_rotation_matrix(t_matrix_four *m, char axe, float angle);

@@ -20,6 +20,7 @@ typedef struct		s_display
 	void			*mlx_ptr;
 	void			*win;
 	char			*img_tab;
+	float			**z_buffer;
 	int				bits_per_pixel;
 	int				img_size_line;
 	int				img_endian;
@@ -31,5 +32,6 @@ extern t_matrix_four	m2w_matrix;
 void				init_mlx();
 void				display_grid(t_grid *grid, t_list *lst);
 void				draw_lines(t_grid *g);
+void				reset_z_buffer();
 
 #endif

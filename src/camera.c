@@ -129,6 +129,7 @@ void			project_grid(t_grid *g, t_matrix_four *m2w) // matrix multiplication is r
 	t_matrix_four	*combined_matrix;
 
 	g = cpy_grid(g);
+	reset_z_buffer();
 	combined_matrix = get_combination_matrix(m2w);
 	visible_vertices = apply_matrix_to_grid(*combined_matrix, g);
 	free(combined_matrix);
@@ -136,7 +137,7 @@ void			project_grid(t_grid *g, t_matrix_four *m2w) // matrix multiplication is r
 	display.img_tab = mlx_get_data_addr(img,
 		&display.bits_per_pixel, &display.img_size_line, &display.img_endian);
 	display_grid(g, visible_vertices);
-	//mlx_put_image_to_window(display.mlx_ptr, display.win, img, 0, 0);
+	mlx_put_image_to_window(display.mlx_ptr, display.win, img, 0, 0);
 	mlx_destroy_image(display.mlx_ptr, img);
 	free_grid(g);
 }

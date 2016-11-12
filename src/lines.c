@@ -24,7 +24,7 @@ static int		process_color(float height)
 	int		g;
 	int		b;
 
-	relative = (height - min_height) / max_height;
+	relative = (height - min_height) / (max_height - min_height);
 
 	r = relative * (GET_RED(HIGH_COLOR) - GET_RED(LOW_COLOR)) \
 		+ GET_RED(LOW_COLOR);

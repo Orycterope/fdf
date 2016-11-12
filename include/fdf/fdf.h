@@ -11,7 +11,7 @@
 typedef struct		s_vertex
 {
 	t_vector		pos;
-	int				color;
+	float			height;
 }					t_vertex;
 
 typedef struct		s_grid
@@ -19,8 +19,6 @@ typedef struct		s_grid
 	int				height;
 	int				width;
 	t_vertex		**tab;
-	float			max_height;
-	float			min_height;
 }					t_grid;
 
 typedef struct		s_tupple
@@ -28,6 +26,9 @@ typedef struct		s_tupple
 	int				x;
 	int				y;
 }					t_tupple;
+
+float				max_height;
+float				min_height;
 
 t_grid				*parse_file(int fd);
 t_list				*apply_matrix_to_grid(t_matrix_four m, t_grid *grid);

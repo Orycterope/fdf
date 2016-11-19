@@ -5,8 +5,11 @@
 # define FOV_HALF_ANGLE 50
 # define RAD(a) (a * M_PI / 180)
 # define MAX(a, b) (a > b ? a : b)
+# define MIN(a, b) (a < b ? a : b)
 # define HIGH_COLOR 0xFF0000
+# define MIDDLE_COLOR 0x00FF00
 # define LOW_COLOR 0x0000FF
+# define MIDDLE_COLOR_PERCENT 0.05
 
 typedef struct		s_vertex
 {

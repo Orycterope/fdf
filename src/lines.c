@@ -24,14 +24,29 @@ static int		process_color(float height)
 	int		g;
 	int		b;
 
+	if (max_height == min_height)
+		return (0xFFFFFF);
 	relative = (height - min_height) / (max_height - min_height);
-
-	r = relative * (GET_RED(HIGH_COLOR) - GET_RED(LOW_COLOR)) \
-		+ GET_RED(LOW_COLOR);
-	g = relative * (GET_GREEN(HIGH_COLOR) - GET_GREEN(LOW_COLOR)) \
-		+ GET_GREEN(LOW_COLOR);
-	b = relative * (GET_BLUE(HIGH_COLOR) - GET_BLUE(LOW_COLOR)) \
-		+ GET_BLUE(LOW_COLOR);
+	if (relative > MIDDLE_COLOR_PERCENT)
+	{
+		relative = (relative - MIDDLE_COLOR_PERCENT) / (1 - MIDDLE_COLOR_PERCENT);
+		r = relative * (GET_RED(HIGH_COLOR) - GET_RED(MIDDLE_COLOR)) \
+			+ GET_RED(MIDDLE_COLOR);
+		g = relative * (GET_GREEN(HIGH_COLOR) - GET_GREEN(MIDDLE_COLOR)) \
+			+ GET_GREEN(MIDDLE_COLOR);
+		b = relative * (GET_BLUE(HIGH_COLOR) - GET_BLUE(MIDDLE_COLOR)) \
+			+ GET_BLUE(MIDDLE_COLOR);
+	}
+	else
+	{
+		relative = relative / (MIDDLE_COLOR_PERCENT);
+		r = relative * (GET_RED(MIDDLE_COLOR) - GET_RED(LOW_COLOR)) \
+			+ GET_RED(LOW_COLOR);
+		g = relative * (GET_GREEN(MIDDLE_COLOR) - GET_GREEN(LOW_COLOR)) \
+			+ GET_GREEN(LOW_COLOR);
+		b = relative * (GET_BLUE(MIDDLE_COLOR) - GET_BLUE(LOW_COLOR)) \
+			+ GET_BLUE(LOW_COLOR);
+	}
 	return (TO_RED(r) | TO_GREEN(g) | TO_BLUE(b));
 }
 

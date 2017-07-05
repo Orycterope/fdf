@@ -18,7 +18,7 @@ void		reset_z_buffer()
 	{
 		c = -1;
 		while (++c < WIN_WIDTH)
-			display.z_buffer[l][c] = FLT_MIN;
+			display.z_buffer[l][c] = FLT_MAX;
 	}
 }
 

@@ -13,7 +13,7 @@ typedef struct	s_camera
 
 extern t_camera	camera;
 
-void			init_camera();
+void			init_camera(t_grid *grid);
 void			rotate_camera(char axe, char sens);
 void			project_grid(t_grid *g, t_matrix_four *m2w);
 

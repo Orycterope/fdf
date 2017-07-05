@@ -1,6 +1,6 @@
 #include "display.h"
 #include <mlx.h>
-#include <math.h>
+#include <float.h>
 #define ROUND(x)	((int)(x + 0.5))
 #define ABS(x)		(x < 0 ? -(x) : (x))
 #define GET_BLUE(x)		(x & 0xFF)
@@ -53,11 +53,13 @@ static int		process_color(float height)
 static void draw_pixel(t_vertex v, float intensity)
 {
 	unsigned int	color;
+	unsigned char	component;
 	int				i;
 	size_t			pos;
 
 	if ((int)X(v) <= 0 || X(v) >= WIN_WIDTH || (int)Y(v) <= 0 || Y(v) >= WIN_HEIGHT
-		|| intensity < 0 || Z(v) < display.z_buffer[(int)Y(v)][(int)X(v)])
+		|| intensity <= 0 || Z(v) > display.z_buffer[(int)Y(v)][(int)X(v)]
+		|| (intensity < 1 && display.z_buffer[(int)Y(v)][(int)X(v)] != FLT_MAX))
 		return;
 	color = process_color(v.height);
 	color = mlx_get_color_value(display.mlx_ptr, color);
@@ -65,11 +67,18 @@ static void draw_pixel(t_vertex v, float intensity)
 	i = 0;
 	while (i * 8 < display.bits_per_pixel)
 	{
-		if ((unsigned char)color * intensity > (unsigned char)display.img_tab[pos + i])
-			display.img_tab[pos + i] = (unsigned char)color * intensity;
+		//if ((unsigned char)color * intensity > (unsigned char)display.img_tab[pos + i])
+		//display.img_tab[pos + i] = (unsigned char)color * intensity;
+		component = (unsigned char)color * intensity;
+		if (intensity < 1)
+			component += display.img_tab[pos + i] * (1 - intensity);
+			//component = MAX(display.img_tab[pos + i], component);
+		display.img_tab[pos + i] = component;
 		color >>= 8;
 		i++;
 	}
+	if (intensity == 1) // anti-aliased line will be overwritten
+		display.z_buffer[(int)Y(v)][(int)X(v)] = Z(v);
 }
 
 static void draw_horizontal_line(t_vertex v1, t_vertex v2)

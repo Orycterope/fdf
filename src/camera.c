@@ -4,7 +4,6 @@
 #include "fdf.h"
 #include <math.h>
 #include <mlx.h>
-#include <stdio.h> //
 
 t_camera		camera;
 

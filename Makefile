@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/18 19:13:31 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/28 15:16:03 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/11/24 19:43:56 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,18 @@ OBJ_PATH = $(ROOT)/$(OBJ_FOLDER)
 DST_PATH = $(ROOT)
 LFT_PATH = $(ROOT)
 
+OS := $(shell uname)
+ifeq ($(OS),Darwin)
+	MLXLIBS = -lmlx -framework OpenGL -framework AppKit
+else
+	MLXLIBS = -lmlx -lXext -lX11
+endif
+
 CC = gcc -g3
 CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS = $(addprefix -I ,$(INC_PATH))
 LDFLAGS = -L$(LFT_PATH)
-LDLIBS = -lft -lm -lmlx -lXext -lX11
+LDLIBS = -lft -lm $(MLXLIBS)
 
 SRC_NAME =		main.c \
 				grid.c \

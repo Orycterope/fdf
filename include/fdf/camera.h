@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   camera.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/11 17:49:47 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/11 17:56:57 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CAMERA_H
 # define CAMERA_H
 # include "matrix.h"
@@ -10,8 +22,6 @@ typedef struct	s_camera
 	t_vector	dir;
 	t_vector	up;
 }				t_camera;
-
-extern t_camera	camera;
 
 void			init_camera(t_grid *grid);
 void			rotate_camera(char axe, char sens);

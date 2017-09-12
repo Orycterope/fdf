@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   camera.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/12 15:20:48 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/12 16:53:19 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "camera.h"
 #include "display.h"
 #include "libft.h"
@@ -5,38 +17,16 @@
 #include <math.h>
 #include <mlx.h>
 
-t_camera		camera;
+t_camera		g_camera;
 
 void			init_camera(t_grid *grid)
 {
 	float	z_pos;
 
 	z_pos = MAX(grid->width, grid->height) / tan(RAD(FOV_HALF_ANGLE)) * 1.2;
-	fill_vector(&camera.pos, 0, 0, z_pos);
-	fill_vector(&camera.dir, 0, 0, -1);
-	fill_vector(&camera.up, 0, 1, 0);
-}
-
-void			get_rotation_matrix(t_matrix_four *m, char axe, float angle)
-{
-	ft_bzero(m, sizeof(t_matrix_four));
-	(*m)[3][3] = 1;
-	if (axe == 'x')
-	{
-		(*m)[0][0] = 1;
-		(*m)[1][1] = (float)cos(angle);
-		(*m)[1][2] = (float)-sin(angle);
-		(*m)[2][1] = (float)sin(angle);
-		(*m)[2][2] = (float)cos(angle);
-	}
-	else if (axe == 'y')
-	{
-		(*m)[0][0] = (float)cos(angle);
-		(*m)[0][2] = (float)sin(angle);
-		(*m)[1][1] = 1;
-		(*m)[2][0] = (float)-sin(angle);
-		(*m)[2][2] = (float)cos(angle);
-	}
+	fill_vector(&g_camera.pos, 0, 0, z_pos);
+	fill_vector(&g_camera.dir, 0, 0, -1);
+	fill_vector(&g_camera.up, 0, 1, 0);
 }
 
 void			rotate_camera(char axe, char sens)
@@ -48,21 +38,17 @@ void			rotate_camera(char axe, char sens)
 
 	angle = (sens > 0) ? ROTATION_ANGLE : -ROTATION_ANGLE;
 	get_rotation_matrix(&rot_m, axe, angle);
-	new_pos = multiply_matrix_vector(rot_m, camera.pos);
-	new_up = multiply_matrix_vector(rot_m, camera.up);
-	ft_memcpy(&(camera.pos), new_pos, sizeof(t_vector));
-	ft_memcpy(&(camera.up), new_up, sizeof(t_vector));
+	new_pos = multiply_matrix_vector(rot_m, g_camera.pos);
+	new_up = multiply_matrix_vector(rot_m, g_camera.up);
+	ft_memcpy(&(g_camera.pos), new_pos, sizeof(t_vector));
+	ft_memcpy(&(g_camera.up), new_up, sizeof(t_vector));
 	free(new_pos);
 	free(new_up);
-	ft_memcpy(&(camera.dir), &(camera.pos), sizeof(t_vector));
-	normalize_vector(&(camera.dir));
-	camera.dir[0] = -camera.dir[0];
-	camera.dir[1] = -camera.dir[1];
-	camera.dir[2] = -camera.dir[2];
-/*	printf("camera: pos: x: %f, y: %f, z %f\n\t\tdir: x: %f, y: %f, z: %f\n\t\tup:  x: %f, y: %f, z: %f\n",
-		camera.pos[0], camera.pos[1], camera.pos[2],
-		camera.dir[0], camera.dir[1], camera.dir[2],
-		camera.up[0], camera.up[1], camera.up[2]);*/
+	ft_memcpy(&(g_camera.dir), &(g_camera.pos), sizeof(t_vector));
+	normalize_vector(&(g_camera.dir));
+	g_camera.dir[0] = -g_camera.dir[0];
+	g_camera.dir[1] = -g_camera.dir[1];
+	g_camera.dir[2] = -g_camera.dir[2];
 }
 
 void			translate_camera(int axe, int sens)
@@ -71,57 +57,12 @@ void			translate_camera(int axe, int sens)
 
 	ft_bzero(&v, sizeof(t_vector));
 	v[axe] = sens;
-	camera.pos[0] += v[0];
-	camera.pos[1] += v[1];
-	camera.pos[2] += v[2];
+	g_camera.pos[0] += v[0];
+	g_camera.pos[1] += v[1];
+	g_camera.pos[2] += v[2];
 }
 
-t_matrix_four	*get_projection_matrix() //static
-{
-	t_matrix_four	m;
-	t_vector		s;
-	t_vector		u;
-	t_matrix_four	t;
-
-	ft_bzero(&m, sizeof(t_matrix_four));
-	cross_product(&s, camera.dir, camera.up);
-	cross_product(&u, s, camera.dir);
-	normalize_vector(&s);
-	normalize_vector(&u);
-	ft_memcpy(&(m[0]), &s, sizeof(t_vector));
-	ft_memcpy(&(m[1]), &u, sizeof(t_vector));
-	get_reversed_vector((t_vector*)&(m[2]), camera.dir);
-	m[3][3] = 1;
-	fill_identity_matrix(&t);
-	t[0][3] = -camera.pos[0];
-	t[1][3] = -camera.pos[1];
-	t[2][3] = -camera.pos[2];
-	return (multiply_matrixes(m, t));
-}
-
-t_matrix_four	*get_combination_matrix(t_matrix_four *m2w)
-{
-	t_matrix_four	*m2;
-	t_matrix_four	*m1;
-	t_matrix_four	*res;
-
-	m1 = get_camera_offset_matrix();
-	m2 = get_perspective_matrix();
-	res = multiply_matrixes(*m1, *m2);
-	free(m1);
-	free(m2);
-	m1 = res;
-	m2 = get_projection_matrix();
-	res = multiply_matrixes(*m1, *m2);
-	free(m1);
-	free(m2);
-	m1 = res;
-	res = multiply_matrixes(*m1, *m2w);
-	free(m1);
-	return (res);
-}
-
-void			project_grid(t_grid *g, t_matrix_four *m2w) // matrix multiplication is reversed
+void			project_grid(t_grid *g, t_matrix_four *m2w)
 {
 	t_list			*visible_vertices;
 	void			*img;
@@ -132,11 +73,12 @@ void			project_grid(t_grid *g, t_matrix_four *m2w) // matrix multiplication is r
 	combined_matrix = get_combination_matrix(m2w);
 	visible_vertices = apply_matrix_to_grid(*combined_matrix, g);
 	free(combined_matrix);
-	img = mlx_new_image(display.mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
-	display.img_tab = mlx_get_data_addr(img,
-		&display.bits_per_pixel, &display.img_size_line, &display.img_endian);
+	img = mlx_new_image(g_display.mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+	g_display.img_tab = mlx_get_data_addr(img,
+		&g_display.bits_per_pixel, &g_display.img_size_line,
+		&g_display.img_endian);
 	display_grid(g, visible_vertices);
-	mlx_put_image_to_window(display.mlx_ptr, display.win, img, 0, 0);
-	mlx_destroy_image(display.mlx_ptr, img);
+	mlx_put_image_to_window(g_display.mlx_ptr, g_display.win, img, 0, 0);
+	mlx_destroy_image(g_display.mlx_ptr, img);
 	free_grid(g);
 }

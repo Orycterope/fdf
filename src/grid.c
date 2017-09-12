@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   grid.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/11 17:53:02 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/12 17:04:45 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
+#include "display.h"
 #include "libft.h"
 #include "camera.h"
 
@@ -14,7 +27,6 @@ t_grid	*cpy_grid(t_grid *g)
 	while (y < g->height)
 	{
 		n->tab[y] = (t_vertex*)ft_memalloc(sizeof(t_vertex) * g->width);
-		//ft_memcpy(&(n->tab[y]), &(g->tab[y]), sizeof(t_vector) * g->width);
 		ft_memcpy(n->tab[y], g->tab[y], sizeof(t_vertex) * g->width);
 		y++;
 	}
@@ -37,8 +49,8 @@ void	get_new_m2w_matrix(char axe, char sens, char rot_trans)
 		fill_identity_matrix(&transf_m);
 		transf_m[(int)axe][3] = (float)sens;
 	}
-	new = multiply_matrixes(transf_m, m2w_matrix);
-	ft_memcpy(&(m2w_matrix), new, sizeof(t_matrix_four));
+	new = multiply_matrixes(transf_m, g_m2w_matrix);
+	ft_memcpy(&(g_m2w_matrix), new, sizeof(t_matrix_four));
 	free(new);
 }
 

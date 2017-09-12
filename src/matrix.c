@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/12 15:11:47 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/12 15:18:43 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 #include "matrix.h"
 #include "libft.h"
-#include <stdio.h> //
 
 t_matrix_four	*multiply_matrixes(t_matrix_four a, t_matrix_four b)
 {
@@ -15,7 +26,7 @@ t_matrix_four	*multiply_matrixes(t_matrix_four a, t_matrix_four b)
 	while (y < 4)
 	{
 		x = 0;
-		while (x <  4)
+		while (x < 4)
 		{
 			(*new)[y][x] = 0;
 			i = 0;
@@ -52,8 +63,6 @@ t_vector		*multiply_matrix_vector(t_matrix_four m, t_vector v)
 
 t_list			*apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
 {
-	//int			x;
-	//int			y;
 	t_vector	*new;
 	t_list		*lst;
 	t_tupple	coord;
@@ -66,7 +75,8 @@ t_list			*apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
 		while (coord.x < grid->width)
 		{
 			new = multiply_matrix_vector(m, grid->tab[coord.y][coord.x].pos);
-			ft_memcpy(&(grid->tab[coord.y][coord.x].pos), new, sizeof(t_vector));
+			ft_memcpy(&(grid->tab[coord.y][coord.x].pos),
+					new, sizeof(t_vector));
 			if (is_displayable(*new))
 				ft_lstadd(&lst, ft_lstnew(&coord, sizeof(t_tupple)));
 			free(new);
@@ -77,7 +87,7 @@ t_list			*apply_matrix_to_grid(t_matrix_four m, t_grid *grid)
 	return (lst);
 }
 
-void			fill_identity_matrix(t_matrix_four *dest) //really used ???
+void			fill_identity_matrix(t_matrix_four *dest)
 {
 	int	i;
 

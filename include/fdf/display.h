@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/11 17:49:58 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/12 17:04:21 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef DISPLAY_H
 # define DISPLAY_H
 # include "fdf.h"
@@ -27,6 +39,7 @@
 #  define KEY_U 117
 #  define KEY_O 111
 # endif
+
 typedef struct		s_display
 {
 	void			*mlx_ptr;
@@ -38,8 +51,8 @@ typedef struct		s_display
 	int				img_endian;
 }					t_display;
 
-extern t_display	display;
-extern t_matrix_four	m2w_matrix;
+extern t_display	g_display;
+extern t_matrix_four	g_m2w_matrix;
 
 void				init_mlx();
 void				display_grid(t_grid *grid, t_list *lst);

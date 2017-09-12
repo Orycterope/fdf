@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/11 19:26:57 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/12 17:05:55 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 # include "matrix.h"
@@ -30,8 +42,8 @@ typedef struct		s_tupple
 	int				y;
 }					t_tupple;
 
-float				max_height;
-float				min_height;
+float				g_max_height;
+float				g_min_height;
 
 t_grid				*parse_file(int fd);
 t_list				*apply_matrix_to_grid(t_matrix_four m, t_grid *grid);
@@ -39,9 +51,10 @@ t_grid				*cpy_grid(t_grid *g);
 void				free_grid(t_grid *g);
 int					is_displayable(t_vector v);
 void				try_draw_line(t_vertex v1, t_vertex v2);
+int					process_color(float height);
 void				translate_camera(int axe, int sens);
 void				get_new_m2w_matrix(char axe, char sens, char rot_trans);
-void				get_rotation_matrix(t_matrix_four *m, char axe, float angle);
+void				get_rotation_matrix(t_matrix_four *m, char axe,
+		float angle);
 
-# include "display.h"
 #endif

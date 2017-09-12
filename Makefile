@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/18 19:13:31 by tvermeil          #+#    #+#              #
-#    Updated: 2016/11/24 19:43:56 by tvermeil         ###   ########.fr        #
+#    Updated: 2017/09/12 15:46:02 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRC_NAME =		main.c \
 				display.c \
 				camera.c \
 				lines.c \
+				colors.c \
 				special_matrixes.c \
 
 HEADER_NAME = 	fdf.h \

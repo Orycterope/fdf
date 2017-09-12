@@ -1,94 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lines.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/11 17:50:44 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/12 15:57:42 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "display.h"
 #include <mlx.h>
 #include <float.h>
 #define ROUND(x)	((int)(x + 0.5))
 #define ABS(x)		(x < 0 ? -(x) : (x))
-#define GET_BLUE(x)		(x & 0xFF)
-#define GET_GREEN(x)	((x >> 8) & 0xFF)
-#define GET_RED(x)		((x >> 16) & 0xFF)
-#define TO_BLUE(x)		(((int)(x)) & 0xFF)
-#define TO_GREEN(x)		((((int)(x)) & 0xFF) << 8)
-#define TO_RED(x)		((((int)(x)) & 0xFF) << 16)
 #define X(v)		(v.pos[0])
 #define Y(v)		(v.pos[1])
 #define Z(v)		(v.pos[2])
 #define H(v)		(v.height)
 
-extern float	max_height;
-extern float	min_height;
+extern float	g_max_height;
+extern float	g_min_height;
 
-static int		process_color(float height)
-{
-	float	relative;
-	int		r;
-	int		g;
-	int		b;
-
-	if (max_height == min_height)
-		return (0xFFFFFF);
-	relative = (height - min_height) / (max_height - min_height);
-	if (relative > MIDDLE_COLOR_PERCENT)
-	{
-		relative = (relative - MIDDLE_COLOR_PERCENT) / (1 - MIDDLE_COLOR_PERCENT);
-		r = relative * (GET_RED(HIGH_COLOR) - GET_RED(MIDDLE_COLOR)) \
-			+ GET_RED(MIDDLE_COLOR);
-		g = relative * (GET_GREEN(HIGH_COLOR) - GET_GREEN(MIDDLE_COLOR)) \
-			+ GET_GREEN(MIDDLE_COLOR);
-		b = relative * (GET_BLUE(HIGH_COLOR) - GET_BLUE(MIDDLE_COLOR)) \
-			+ GET_BLUE(MIDDLE_COLOR);
-	}
-	else
-	{
-		relative = relative / (MIDDLE_COLOR_PERCENT);
-		r = relative * (GET_RED(MIDDLE_COLOR) - GET_RED(LOW_COLOR)) \
-			+ GET_RED(LOW_COLOR);
-		g = relative * (GET_GREEN(MIDDLE_COLOR) - GET_GREEN(LOW_COLOR)) \
-			+ GET_GREEN(LOW_COLOR);
-		b = relative * (GET_BLUE(MIDDLE_COLOR) - GET_BLUE(LOW_COLOR)) \
-			+ GET_BLUE(LOW_COLOR);
-	}
-	return (TO_RED(r) | TO_GREEN(g) | TO_BLUE(b));
-}
-
-static void draw_pixel(t_vertex v, float intensity)
+static void		draw_pixel(t_vertex v, float intensity)
 {
 	unsigned int	color;
 	unsigned char	component;
 	int				i;
 	size_t			pos;
 
-	if ((int)X(v) <= 0 || X(v) >= WIN_WIDTH || (int)Y(v) <= 0 || Y(v) >= WIN_HEIGHT
-		|| intensity <= 0 || Z(v) > display.z_buffer[(int)Y(v)][(int)X(v)]
-		|| (intensity < 1 && display.z_buffer[(int)Y(v)][(int)X(v)] != FLT_MAX))
-		return;
+	if ((int)X(v) <= 0 || X(v) >= WIN_WIDTH || (int)Y(v) <= 0
+		|| Y(v) >= WIN_HEIGHT || intensity <= 0
+		|| Z(v) > g_display.z_buffer[(int)Y(v)][(int)X(v)] || (intensity < 1
+			&& g_display.z_buffer[(int)Y(v)][(int)X(v)] != FLT_MAX))
+		return ;
 	color = process_color(v.height);
-	color = mlx_get_color_value(display.mlx_ptr, color);
-	pos = ((int)Y(v)) * display.img_size_line + ((int)X(v)) * display.bits_per_pixel / 8;
-	i = 0;
-	while (i * 8 < display.bits_per_pixel)
+	color = mlx_get_color_value(g_display.mlx_ptr, color);
+	pos = ((int)Y(v)) * g_display.img_size_line
+		+ ((int)X(v)) * g_display.bits_per_pixel / 8;
+	i = -1;
+	while (++i * 8 < g_display.bits_per_pixel)
 	{
-		//if ((unsigned char)color * intensity > (unsigned char)display.img_tab[pos + i])
-		//display.img_tab[pos + i] = (unsigned char)color * intensity;
 		component = (unsigned char)color * intensity;
 		if (intensity < 1)
-			component += display.img_tab[pos + i] * (1 - intensity);
-			//component = MAX(display.img_tab[pos + i], component);
-		display.img_tab[pos + i] = component;
+			component += g_display.img_tab[pos + i] * (1 - intensity);
+		g_display.img_tab[pos + i] = component;
 		color >>= 8;
-		i++;
 	}
-	if (intensity == 1) // anti-aliased line will be overwritten
-		display.z_buffer[(int)Y(v)][(int)X(v)] = Z(v);
+	if (intensity == 1)
+		g_display.z_buffer[(int)Y(v)][(int)X(v)] = Z(v);
 }
 
-static void draw_horizontal_line(t_vertex v1, t_vertex v2)
+static void		draw_horizontal_line(t_vertex v1, t_vertex v2)
 {
-	float	dx;
-	float	dy;
+	float		dx;
+	float		dy;
 	t_vertex	p;
 	t_vertex	n;
 
-	dx =  X(v2) - X(v1);
+	dx = X(v2) - X(v1);
 	dy = Y(v2) - Y(v1);
 	X(p) = X(v1);
 	while (X(p) <= X(v2))
@@ -107,14 +78,14 @@ static void draw_horizontal_line(t_vertex v1, t_vertex v2)
 	}
 }
 
-static void draw_vertical_line(t_vertex v1, t_vertex v2)
+static void		draw_vertical_line(t_vertex v1, t_vertex v2)
 {
-	float	dx;
-	float	dy;
+	float		dx;
+	float		dy;
 	t_vertex	p;
 	t_vertex	n;
 
-	dx =  X(v2) - X(v1);
+	dx = X(v2) - X(v1);
 	dy = Y(v2) - Y(v1);
 	Y(p) = Y(v1);
 	while (Y(p) <= Y(v2))
@@ -133,14 +104,13 @@ static void draw_vertical_line(t_vertex v1, t_vertex v2)
 	}
 }
 
-void		try_draw_line(t_vertex v1, t_vertex v2)
+void			try_draw_line(t_vertex v1, t_vertex v2)
 {
 	if ((X(v1) < 0 && X(v2) < 0)
 		|| (X(v1) > WIN_WIDTH && X(v2) > WIN_WIDTH)
 		|| (Y(v1) < 0 && Y(v2) < 0)
 		|| (Y(v1) > WIN_HEIGHT && Y(v2) > WIN_HEIGHT))
-		return;
-
+		return ;
 	if (ABS(Y(v2) - Y(v1)) < ABS(X(v2) - X(v1)))
 	{
 		if (X(v2) > X(v1))

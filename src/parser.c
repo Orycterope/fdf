@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/11 17:52:31 by tvermeil          #+#    #+#             */
+/*   Updated: 2017/09/12 15:42:27 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 #include "libft.h"
 #include "get_next_line.h"
 #include "matrix.h"
 #define IS_DECIMAL_CHAR(c) (c >= '0' && c <= '9')
 
-extern float	max_height;
-extern float	min_height;
+extern float	g_max_height;
+extern float	g_min_height;
 
 static int		is_number(char **c)
 {
@@ -49,7 +61,6 @@ static int		save_line(t_list **lst, char *line, int *expected_length)
 		*expected_length = length;
 	else if (length != *expected_length)
 		return (-1);
-	//new = ft_lstnew(line, ft_strlen(line));
 	new = ft_lstnew_nocpy(ft_strsplit(line, ' '), 0);
 	if (new == NULL)
 		return (-1);
@@ -57,13 +68,12 @@ static int		save_line(t_list **lst, char *line, int *expected_length)
 	return (length);
 }
 
-static void		fill_grid(t_grid *grid, t_list *lst)
+static void		fill_grid(t_grid *grid, t_list *lst, float z)
 {
 	int		line;
 	int		col;
 	t_list	*next;
 	char	**tab;
-	float	z;
 
 	line = -1;
 	while (++line < grid->height)
@@ -77,8 +87,8 @@ static void		fill_grid(t_grid *grid, t_list *lst)
 				col - grid->width / 2, line - grid->height / 2, z);
 			grid->tab[line][col].height = z;
 			free(tab[col]);
-			max_height = z > max_height ? z : max_height;
-			min_height = z < min_height ? z : min_height;
+			g_max_height = z > g_max_height ? z : g_max_height;
+			g_min_height = z < g_min_height ? z : g_min_height;
 		}
 		next = lst->next;
 		free(lst->content);
@@ -103,7 +113,7 @@ static t_grid	*create_grid(t_list *lst, int line_length)
 	grid->height = line_nbr;
 	grid->width = line_length;
 	grid->tab = tab;
-	fill_grid(grid, lst);
+	fill_grid(grid, lst, 0);
 	return (grid);
 }
 

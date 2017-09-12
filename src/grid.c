@@ -49,5 +49,6 @@ void	free_grid(t_grid *g)
 	y = 0;
 	while (y < g->height)
 		free(g->tab[y++]);
+	free(g->tab);
 	free(g);
 }

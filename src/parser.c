@@ -121,6 +121,7 @@ t_grid			*parse_file(int fd)
 			return (NULL);
 		free(line);
 	}
+	free(line);
 	if (line_length == -1)
 		return (NULL);
 	return (create_grid(lst, line_length));

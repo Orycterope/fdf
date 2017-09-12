@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/12 12:54:52 by tvermeil          #+#    #+#             */
-/*   Updated: 2017/09/12 15:11:39 by tvermeil         ###   ########.fr       */
+/*   Updated: 2017/09/12 17:28:40 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
+
+int			key_callback_2(int keycode)
+{
+	if (keycode == KEY_ESC || keycode == KEY_Q)
+		exit(0);
+	return (0);
+}
 
 int			key_callback(int keycode, void *param)
 {
@@ -43,7 +50,7 @@ int			key_callback(int keycode, void *param)
 	else if (keycode == KEY_O)
 		get_new_m2w_matrix(2, -1, 0);
 	else
-		return (0);
+		return (key_callback_2(keycode));
 	project_grid(param, &g_m2w_matrix);
 	return (0);
 }

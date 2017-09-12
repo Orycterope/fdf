@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 17:49:58 by tvermeil          #+#    #+#             */
-/*   Updated: 2017/09/12 17:04:21 by tvermeil         ###   ########.fr       */
+/*   Updated: 2017/09/12 17:28:25 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 #  define KEY_L 37
 #  define KEY_U 32
 #  define KEY_O 31
+#  define KEY_ESC 53
+#  define KEY_Q 12
 # else
 #  define KEY_W 119
 #  define KEY_S 115
@@ -38,6 +40,8 @@
 #  define KEY_L 108
 #  define KEY_U 117
 #  define KEY_O 111
+#  define KEY_ESC 27
+#  define KEY_Q 113
 # endif
 
 typedef struct		s_display

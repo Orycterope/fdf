@@ -34,7 +34,7 @@ endif
 CC = gcc -g3
 CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS = $(addprefix -I ,$(INC_PATH))
-LDFLAGS = -L$(LFT_PATH)
+LDFLAGS = -L$(LFT_PATH) -no-pie
 LDLIBS = -lft -lm $(MLXLIBS)
 
 SRC_NAME =		main.c \
